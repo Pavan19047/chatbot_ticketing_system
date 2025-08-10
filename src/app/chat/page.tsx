@@ -12,7 +12,7 @@ export default function ChatPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const lang = searchParams?.lang as string;
+  const lang = typeof searchParams.lang === 'string' ? searchParams.lang : 'en';
   
   return (
     <Suspense fallback={<div>Loading...</div>}>
