@@ -4,7 +4,7 @@ import { Separator } from '../ui/separator';
 
 interface TicketSummaryProps {
   order: TicketOrder;
-  lang: 'en' | 'es';
+  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te';
 }
 
 const translations = {
@@ -26,6 +26,42 @@ const translations = {
     childTickets: 'Entradas de Niño',
     total: 'Total',
   },
+  hi: {
+    title: 'आदेश सारांश',
+    experience: 'अनुभव',
+    date: 'तारीख',
+    time: 'समय',
+    adultTickets: 'वयस्क टिकट',
+    childTickets: 'बच्चे का टिकट',
+    total: 'कुल',
+  },
+  bn: {
+      title: 'অর্ডার সারাংশ',
+      experience: 'অভিজ্ঞতা',
+      date: 'তারিখ',
+      time: 'সময়',
+      adultTickets: 'প্রাপ্তবয়স্কদের টিকিট',
+      childTickets: 'শিশুদের টিকিট',
+      total: 'মোট',
+  },
+  ta: {
+      title: 'ஆர்டர் சுருக்கம்',
+      experience: 'அனுபவம்',
+      date: 'தேதி',
+      time: 'நேரம்',
+      adultTickets: 'பெரியவர் டிக்கெட்டுகள்',
+      childTickets: 'குழந்தை டிக்கெட்டுகள்',
+      total: 'மொத்தம்',
+  },
+  te: {
+      title: 'ఆర్డర్ సారాంశం',
+      experience: 'అనుభవం',
+      date: 'తేదీ',
+      time: 'సమయం',
+      adultTickets: 'పెద్దల టిక్కెట్లు',
+      childTickets: 'పిల్లల టిక్కెట్లు',
+      total: 'మొత్తం',
+  }
 };
 
 export function TicketSummary({ order, lang }: TicketSummaryProps) {

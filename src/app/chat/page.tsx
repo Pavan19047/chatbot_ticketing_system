@@ -2,14 +2,15 @@ import ChatInterface from '@/components/chat/chat-interface';
 import { Suspense } from 'react';
 
 function ChatPageContent({ lang }: { lang?: string }) {
-  const validLang = lang === 'es' ? 'es' : 'en';
+  const validLangs = ['en', 'hi', 'bn', 'ta', 'te'];
+  const validLang = lang && validLangs.includes(lang) ? lang as 'en' | 'hi' | 'bn' | 'ta' | 'te' : 'en';
   return <ChatInterface lang={validLang} />;
 }
 
-export default async function ChatPage({
+export default function ChatPage({
   searchParams,
 }: {
-  searchParams?: { [key: 'string']: string | string[] | undefined };
+  searchParams: { [key: 'string']: string | string[] | undefined };
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>

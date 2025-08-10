@@ -22,7 +22,7 @@ export default function Home() {
           <div className="text-center">
             <h3 className="text-lg font-semibold">Choose your language</h3>
             <p className="text-sm text-muted-foreground">
-              Selecciona tu idioma
+              अपनी भाषा चुनें
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -38,7 +38,28 @@ export default function Home() {
               size="lg"
               className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
             >
-              <Link href="/chat?lang=es">Español</Link>
+              <Link href="/chat?lang=hi">हिन्दी</Link>
+            </Button>
+             <Button
+              asChild
+              size="lg"
+              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+            >
+              <Link href="/chat?lang=bn">বাংলা</Link>
+            </Button>
+             <Button
+              asChild
+              size="lg"
+              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+            >
+              <Link href="/chat?lang=ta">தமிழ்</Link>
+            </Button>
+             <Button
+              asChild
+              size="lg"
+              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+            >
+              <Link href="/chat?lang=te">తెలుగు</Link>
             </Button>
           </div>
         </CardContent>
