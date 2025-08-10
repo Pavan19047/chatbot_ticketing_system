@@ -6,7 +6,7 @@ function ChatPageContent({ lang }: { lang?: string }) {
   return <ChatInterface lang={validLang} />;
 }
 
-export default function ChatPage({
+export default async function ChatPage({
   searchParams,
 }: {
   searchParams?: { [key: 'string']: string | string[] | undefined };
