@@ -5,7 +5,7 @@ import jsPDF from 'jspdf';
 import { TicketOrder } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Separator } from '../ui/separator';
-import { Download, FileJpg, FilePdf, Ticket } from 'lucide-react';
+import { Download, Ticket } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface DigitalTicketProps {
@@ -151,10 +151,10 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
       <CardFooter className="p-2 bg-slate-50 border-t-2 border-black">
           <div className="flex w-full gap-2">
             <Button onClick={handleDownloadJpg} variant="secondary" className="w-full neubrutalist-border neubrutalist-shadow-sm">
-                <FileJpg className="mr-2" /> {t.downloadJpg}
+                <Download className="mr-2" /> {t.downloadJpg}
             </Button>
             <Button onClick={handleDownloadPdf} variant="secondary" className="w-full neubrutalist-border neubrutalist-shadow-sm">
-                <FilePdf className="mr-2" /> {t.downloadPdf}
+                <Download className="mr-2" /> {t.downloadPdf}
             </Button>
           </div>
       </CardFooter>
