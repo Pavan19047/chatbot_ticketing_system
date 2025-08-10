@@ -10,7 +10,7 @@ function ChatPageContent({ lang }: { lang?: string }) {
 export default function ChatPage({
   searchParams,
 }: {
-  searchParams: { [key: 'string']: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
