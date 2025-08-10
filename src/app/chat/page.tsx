@@ -2,8 +2,8 @@ import ChatInterface from '@/components/chat/chat-interface';
 import { Suspense } from 'react';
 
 function ChatPageContent({ lang }: { lang?: string }) {
-  const validLangs = ['en', 'hi', 'bn', 'ta', 'te'];
-  const validLang = lang && validLangs.includes(lang) ? lang as 'en' | 'hi' | 'bn' | 'ta' | 'te' : 'en';
+  const validLangs = ['en', 'hi', 'bn', 'ta', 'te', 'kn'];
+  const validLang = lang && validLangs.includes(lang) ? lang as 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn' : 'en';
   return <ChatInterface lang={validLang} />;
 }
 

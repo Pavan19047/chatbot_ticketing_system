@@ -4,7 +4,7 @@ import { Separator } from '../ui/separator';
 
 interface TicketSummaryProps {
   order: TicketOrder;
-  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te';
+  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn';
 }
 
 const translations = {
@@ -61,6 +61,15 @@ const translations = {
       adultTickets: 'పెద్దల టిక్కెట్లు',
       childTickets: 'పిల్లల టిక్కెట్లు',
       total: 'మొత్తం',
+  },
+  kn: {
+      title: 'ಆದೇಶದ ಸಾರಾಂಶ',
+      experience: 'ಅನುಭವ',
+      date: 'ದಿನಾಂಕ',
+      time: 'ಸಮಯ',
+      adultTickets: 'ವಯಸ್ಕರ ಟಿಕೆಟ್‌ಗಳು',
+      childTickets: 'ಮಕ್ಕಳ ಟಿಕೆಟ್‌ಗಳು',
+      total: 'ಒಟ್ಟು',
   }
 };
 

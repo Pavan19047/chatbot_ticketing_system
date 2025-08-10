@@ -6,7 +6,7 @@ import { Ticket } from 'lucide-react';
 
 interface DigitalTicketProps {
   order: TicketOrder;
-  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te';
+  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn';
 }
 
 const translations = {
@@ -51,6 +51,13 @@ const translations = {
         date: "తేదీ",
         time: "సమయం",
         tickets: "టిక్కెట్లు"
+    },
+    kn: {
+        title: "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಟಿಕೆಟ್",
+        validFor: "ಇದಕ್ಕಾಗಿ ಮಾನ್ಯವಾಗಿದೆ",
+        date: "ದಿನಾಂಕ",
+        time: "ಸಮಯ",
+        tickets: "ಟಿಕೆಟ್‌ಗಳು"
     }
 }
 

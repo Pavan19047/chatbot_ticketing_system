@@ -61,6 +61,13 @@ export default function Home() {
             >
               <Link href="/chat?lang=te">తెలుగు</Link>
             </Button>
+            <Button
+              asChild
+              size="lg"
+              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+            >
+              <Link href="/chat?lang=kn">ಕನ್ನಡ</Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
