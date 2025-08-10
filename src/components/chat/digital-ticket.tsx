@@ -16,6 +16,7 @@ interface DigitalTicketProps {
 const translations = {
     en: {
         title: "Your Digital Ticket",
+        museum: "Museum",
         validFor: "Valid for",
         date: "Date",
         time: "Time",
@@ -25,6 +26,7 @@ const translations = {
     },
     hi: {
         title: "आपका डिजिटल टिकट",
+        museum: "संग्रहालय",
         validFor: "के लिए वैध",
         date: "तारीख",
         time: "समय",
@@ -34,6 +36,7 @@ const translations = {
     },
     bn: {
         title: "আপনার ডিজিটাল টিকিট",
+        museum: "জাদুঘর",
         validFor: "এর জন্য বৈধ",
         date: "তারিখ",
         time: "সময়",
@@ -43,6 +46,7 @@ const translations = {
     },
     ta: {
         title: "உங்கள் டிஜிட்டல் டிக்கெட்",
+        museum: "அருங்காட்சியகம்",
         validFor: "செல்லுபடியாகும்",
         date: "தேதி",
         time: "நேரம்",
@@ -52,6 +56,7 @@ const translations = {
     },
     te: {
         title: "మీ డిజిటల్ టికెట్",
+        museum: "మ్యూజియం",
         validFor: "చెల్లుబాటు అయ్యేది",
         date: "తేదీ",
         time: "సమయం",
@@ -61,6 +66,7 @@ const translations = {
     },
     kn: {
         title: "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಟಿಕೆಟ್",
+        museum: "ವಸ್ತುಸಂಗ್ರಹಾಲಯ",
         validFor: "ಇದಕ್ಕಾಗಿ ಮಾನ್ಯವಾಗಿದೆ",
         date: "ದಿನಾಂಕ",
         time: "ಸಮಯ",
@@ -76,6 +82,7 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   const totalTickets = order.tickets.adult + order.tickets.child;
 
   const qrData = JSON.stringify({
+    museum: order.museum,
     type: order.type,
     date: order.date?.toISOString().split('T')[0],
     time: order.time,
@@ -121,7 +128,8 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
           </CardHeader>
           <CardContent className="p-4 grid grid-cols-3 gap-4">
             <div className="col-span-2 space-y-2 text-sm">
-              <p className="font-semibold text-base">{order.type}</p>
+              <p className="font-semibold text-base">{order.museum}</p>
+              <p className="text-sm">{order.type}</p>
               <Separator />
               <div>
                 <p className="text-muted-foreground">{t.date}</p>

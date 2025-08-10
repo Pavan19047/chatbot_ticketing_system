@@ -10,6 +10,7 @@ interface TicketSummaryProps {
 const translations = {
   en: {
     title: 'Order Summary',
+    museum: 'Museum',
     experience: 'Experience',
     date: 'Date',
     time: 'Time',
@@ -17,17 +18,9 @@ const translations = {
     childTickets: 'Child Tickets',
     total: 'Total',
   },
-  es: {
-    title: 'Resumen del Pedido',
-    experience: 'Experiencia',
-    date: 'Fecha',
-    time: 'Hora',
-    adultTickets: 'Entradas de Adulto',
-    childTickets: 'Entradas de Niño',
-    total: 'Total',
-  },
   hi: {
     title: 'आदेश सारांश',
+    museum: 'संग्रहालय',
     experience: 'अनुभव',
     date: 'तारीख',
     time: 'समय',
@@ -37,6 +30,7 @@ const translations = {
   },
   bn: {
       title: 'অর্ডার সারাংশ',
+      museum: 'জাদুঘর',
       experience: 'অভিজ্ঞতা',
       date: 'তারিখ',
       time: 'সময়',
@@ -46,6 +40,7 @@ const translations = {
   },
   ta: {
       title: 'ஆர்டர் சுருக்கம்',
+      museum: 'அருங்காட்சியகம்',
       experience: 'அனுபவம்',
       date: 'தேதி',
       time: 'நேரம்',
@@ -55,6 +50,7 @@ const translations = {
   },
   te: {
       title: 'ఆర్డర్ సారాంశం',
+      museum: 'మ్యూజియం',
       experience: 'అనుభవం',
       date: 'తేదీ',
       time: 'సమయం',
@@ -64,6 +60,7 @@ const translations = {
   },
   kn: {
       title: 'ಆದೇಶದ ಸಾರಾಂಶ',
+      museum: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯ',
       experience: 'ಅನುಭವ',
       date: 'ದಿನಾಂಕ',
       time: 'ಸಮಯ',
@@ -86,8 +83,12 @@ export function TicketSummary({ order, lang }: TicketSummaryProps) {
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
         <div className="flex justify-between">
+          <span>{t.museum}:</span>
+          <span className="font-medium text-right">{order.museum}</span>
+        </div>
+        <div className="flex justify-between">
           <span>{t.experience}:</span>
-          <span className="font-medium">{order.type}</span>
+          <span className="font-medium text-right">{order.type}</span>
         </div>
         <div className="flex justify-between">
           <span>{t.date}:</span>
