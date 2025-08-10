@@ -30,6 +30,17 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   const t = translations[lang];
   const totalTickets = order.tickets.adult + order.tickets.child;
 
+  const qrData = JSON.stringify({
+    type: order.type,
+    date: order.date?.toISOString().split('T')[0],
+    time: order.time,
+    adults: order.tickets.adult,
+    children: order.tickets.child,
+  });
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
+    qrData
+  )}`;
+
   return (
     <Card className="my-2 neubrutalist-border neubrutalist-shadow bg-white overflow-hidden">
       <CardHeader className="bg-primary text-primary-foreground p-4">
@@ -56,7 +67,7 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
         </div>
         <div className="col-span-1 flex flex-col items-center justify-center">
             <Image
-                src="https://placehold.co/150x150.png"
+                src={qrCodeUrl}
                 alt="QR Code"
                 width={150}
                 height={150}
