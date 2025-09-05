@@ -28,11 +28,15 @@ const prompt = ai.definePrompt(
         name: 'faqPrompt',
         input: { schema: FaqInputSchema },
         output: { schema: FaqOutputSchema.nullable() },
-        prompt: `You are a helpful assistant for a museum. A user is asking a question. Your primary goal is to answer their question based on the context of a museum.
+        prompt: `You are a helpful assistant. Your primary goal is to answer the user's question.
 
-However, if the user's question is about booking tickets, purchasing tickets, getting a list of museums, or any other query that implies they want to start the ticket buying process, you should respond with the exact string "BOOK_TICKETS" and nothing else.
+If the user's question is about booking tickets, purchasing tickets, getting a list of museums, or any other query that implies they want to start the ticket buying process, you should respond with the exact string "BOOK_TICKETS" and nothing else.
 
-Otherwise, answer the following question in the same language it was asked.
+If the question is about a museum, answer it in a helpful and concise way.
+
+If the question is a general knowledge question, answer it accurately.
+
+Answer in the same language as the original question.
         
 Question: {{{question}}}
 Language: {{{lang}}}
