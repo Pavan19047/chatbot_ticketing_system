@@ -13,17 +13,16 @@ import { Calendar as CalendarComponent } from '../ui/calendar';
 import { TicketSummary } from './ticket-summary';
 import { PaymentDialog } from './payment-dialog';
 import { DigitalTicket } from './digital-ticket';
-import { getAnswer } from '@/ai/flows/faq-flow';
 import { states, events, getEventsByStateAndCity, getCitiesByState } from '@/lib/events-data';
 
 const translations = {
   en: {
-    welcome: "Hello! I'm your TicketBharat assistant. How can I help you today?",
+    welcome: "नमस्ते! मैं TicketBharat का सहायक हूं। आज मैं आपकी कैसे मदद कर सकता हूं?",
     welcomeBooking: 'Welcome to TicketBharat! Let\'s find the perfect event for you. Please select a state to begin.',
-    welcomeFaq: 'Hi! Ask me anything about entertainment in India - movies, concerts, shows, sports, or general information!',
+    welcomeFaq: 'Ask me anything about events, shows, booking, or entertainment in India!',
     bookingMode: 'Book Tickets',
     faqMode: 'Ask Questions',
-    askMeAnything: 'Ask about entertainment, events, or anything...',
+    askMeAnything: 'Ask about movies, concerts, shows...',
     selectState: 'Great! Please select a state to see available events.',
     selectCity: 'Awesome! Please select a city.',
     selectEvent: 'Perfect! Here are the available events:',
@@ -46,10 +45,10 @@ const translations = {
   hi: {
     welcome: 'नमस्ते! मैं TicketBharat का सहायक हूं। आज मैं आपकी कैसे मदद कर सकता हूं?',
     welcomeBooking: 'TicketBharat में आपका स्वागत है! आइए आपके लिए सही इवेंट खोजते हैं। शुरू करने के लिए कृपया एक राज्य चुनें।',
-    welcomeFaq: 'नमस्ते! भारत में मनोरंजन के बारे में मुझसे कुछ भी पूछें - फिल्में, कॉन्सर्ट, शो, खेल, या सामान्य जानकारी!',
+    welcomeFaq: 'भारत में इवेंट्स, शो, बुकिंग या मनोरंजन के बारे में मुझसे कुछ भी पूछें!',
     bookingMode: 'टिकट बुक करें',
     faqMode: 'सवाल पूछें',
-    askMeAnything: 'मनोरंजन, इवेंट्स या कुछ भी पूछें...',
+    askMeAnything: 'फिल्में, कॉन्सर्ट, शो के बारे में पूछें...',
     selectState: 'बहुत बढ़िया! उपलब्ध इवेंट्स देखने के लिए कृपया एक राज्य चुनें।',
     selectCity: 'शानदार! कृपया एक शहर चुनें।',
     selectEvent: 'बहुत बढ़िया! यहाँ उपलब्ध इवेंट्स हैं:',
@@ -77,11 +76,44 @@ type ChatStep =
 
 type ChatMode = 'booking' | 'faq';
 
+// Simple chatbot function without external AI dependency
+function getSimpleAnswer(question: string, lang: 'en' | 'hi'): string {
+  const q = question.toLowerCase();
+  
+  // Check for booking keywords
+  if (q.includes('book') || q.includes('ticket') || q.includes('movie') || 
+      q.includes('concert') || q.includes('show') || q.includes('event') ||
+      q.includes('buy') || q.includes('purchase') || q.includes('टिकट') || 
+      q.includes('बुक') || q.includes('फिल्म')) {
+    return 'BOOK_TICKETS';
+  }
+  
+  // Greetings
+  if (q.includes('hello') || q.includes('hi') || q.includes('hey') || 
+      q.includes('नमस्ते') || q.includes('हैलो')) {
+    return lang === 'hi' 
+      ? 'नमस्ते! मैं TicketBharat का सहायक हूं। मैं आपको टिकट बुक करने में मदद कर सकता हूं!'
+      : 'Hello! I\'m your TicketBharat assistant. I can help you book tickets for movies, concerts, and events!';
+  }
+  
+  // Questions about events
+  if (q.includes('event') || q.includes('show') || q.includes('movie') || q.includes('concert')) {
+    return lang === 'hi'
+      ? 'हमारे पास फिल्में, कॉन्सर्ट, खेल, रंगमंच और कॉमेडी शो उपलब्ध हैं। टिकट बुक करने के लिए "टिकट बुक करें" कहें!'
+      : 'We have movies, concerts, sports, theater and comedy shows available! Say "book tickets" to get started!';
+  }
+  
+  // Default response
+  return lang === 'hi'
+    ? 'मैं आपकी मदद करने के लिए यहाँ हूं! टिकट बुक करने के लिए "टिकट बुक करें" कहें या कोई भी सवाल पूछें।'
+    : 'I\'m here to help you! Say "book tickets" to start booking or ask me any questions about entertainment!';
+}
+
 export default function ChatInterface({ lang = 'en' }: { lang?: 'en' | 'hi' }) {
   const t = translations[lang];
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState<ChatStep>('start');
-  const [mode, setMode] = useState<ChatMode>('faq');
+  const [mode, setMode] = useState<ChatMode>('booking');
   const [order, setOrder] = useState<TicketOrder>({
     state: null,
     city: null,
@@ -146,7 +178,7 @@ export default function ChatInterface({ lang = 'en' }: { lang?: 'en' | 'hi' }) {
     }
   };
   
-  const handleFaqQuestion = async (e: FormEvent<HTMLFormElement>) => {
+  const handleFaqQuestion = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const question = formData.get('question') as string;
@@ -156,53 +188,14 @@ export default function ChatInterface({ lang = 'en' }: { lang?: 'en' | 'hi' }) {
     e.currentTarget.reset();
     
     handleBotResponse(() => {
-      // Use local responses only for now to test
-      const q = question.toLowerCase();
-      let response = '';
-      
-      // Only redirect to booking for EXPLICIT booking requests
-      if (q.includes('book ticket') || q.includes('buy ticket') || 
-          q.includes('purchase ticket') || q.includes('i want to book') ||
-          q.includes('टिकट बुक करना') || q.includes('टिकट खरीदना')) {
-        addMessage('bot', "I can help you book tickets! Let me switch you to booking mode.");
+      const answer = getSimpleAnswer(question, lang);
+      if (answer === 'BOOK_TICKETS') {
+        addMessage('bot', "It looks like you want to book tickets. I'll switch you to booking mode.");
         setTimeout(() => handleModeChange('booking'), 1500);
-        return;
-      }
-      
-      // Provide natural responses for common questions
-      if (q.includes('hello') || q.includes('hi') || q.includes('नमस्ते')) {
-        response = lang === 'hi' 
-          ? 'नमस्ते! मैं TicketBharat का सहायक हूं। मैं फिल्में, कॉन्सर्ट, खेल और अन्य मनोरंजन कार्यक्रमों के बारे में जानकारी दे सकता हूं। आप मुझसे कुछ भी पूछ सकते हैं!'
-          : 'Hello! I\'m your TicketBharat assistant. I can provide information about movies, concerts, sports, and entertainment events. Ask me anything!';
-      } else if (q.includes('movie') || q.includes('फिल्म')) {
-        response = lang === 'hi'
-          ? 'हमारे पास बॉलीवुड, हॉलीवुड और क्षेत्रीय फिल्में उपलब्ध हैं। आप अपने शहर में चल रही लेटेस्ट फिल्में देख सकते हैं। कोई खास फिल्म के बारे में जानना चाहते हैं?'
-          : 'We have Bollywood, Hollywood, and regional movies available. You can check the latest movies playing in your city. Looking for information about any specific movie?';
-      } else if (q.includes('concert') || q.includes('कॉन्सर्ट')) {
-        response = lang === 'hi'
-          ? 'हमारे पास शास्त्रीय संगीत, बॉलीवुड कॉन्सर्ट, रॉक शो और अन्य संगीत कार्यक्रम होते रहते हैं। दिल्ली, मुंबई, बैंगलोर में नियमित कॉन्सर्ट होते हैं।'
-          : 'We have classical music, Bollywood concerts, rock shows, and other musical events. Regular concerts happen in Delhi, Mumbai, Bangalore, and other major cities.';
-      } else if (q.includes('sports') || q.includes('खेल')) {
-        response = lang === 'hi'
-          ? 'हमारे पास क्रिकेट मैच, फुटबॉल गेम्स, कबड्डी लीग और अन्य खेल इवेंट्स की टिकट मिलती हैं। IPL, ISL जैसी लीग्स की टिकट भी उपलब्ध हैं।'
-          : 'We have tickets for cricket matches, football games, kabaddi leagues, and other sports events. Tickets for leagues like IPL, ISL are also available.';
-      } else if (q.includes('price') || q.includes('cost') || q.includes('कीमत')) {
-        response = lang === 'hi'
-          ? 'टिकट की कीमत इवेंट और सीट के हिसाब से अलग होती है। आमतौर पर फिल्म टिकट ₹150-500, कॉन्सर्ट ₹500-5000, और खेल ₹300-2000 तक होती हैं।'
-          : 'Ticket prices vary by event and seating. Typically, movie tickets range ₹150-500, concerts ₹500-5000, and sports events ₹300-2000.';
-      } else if (q.includes('what') || q.includes('क्या')) {
-        response = lang === 'hi'
-          ? 'मैं आपको टिकट, इवेंट्स, फिल्में, कॉन्सर्ट और खेल के बारे में जानकारी दे सकता हूं। आप कोई खास चीज़ जानना चाहते हैं?'
-          : 'I can tell you about tickets, events, movies, concerts, and sports. What specific information would you like?';
       } else {
-        // Default helpful response
-        response = lang === 'hi'
-          ? 'मैं TicketBharat के बारे में जानकारी दे सकता हूं! आप मुझसे फिल्में, कॉन्सर्ट, खेल, या किसी भी मनोरंजन कार्यक्रम के बारे में पूछ सकते हैं। क्या आप कोई खास चीज़ जानना चाहते हैं?'
-          : "I can provide information about TicketBharat! You can ask me about movies, concerts, sports, or any entertainment events. What would you like to know?";
+        addMessage('bot', answer);
       }
-      
-      addMessage('bot', response);
-    }, 0);
+    });
   }
   
   const handleStateSelection = (state: string) => {

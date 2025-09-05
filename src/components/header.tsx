@@ -16,7 +16,7 @@ const languages = [
 
 interface HeaderProps {
   currentLang?: string;
-  onLanguageChange?: (lang: string) => void;
+  onLanguageChange?: (lang: 'en' | 'hi') => void;
 }
 
 export function Header({ currentLang = 'en', onLanguageChange }: HeaderProps) {
@@ -88,7 +88,7 @@ export function Header({ currentLang = 'en', onLanguageChange }: HeaderProps) {
                   key={lang.code}
                   variant={currentLang === lang.code ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => onLanguageChange(lang.code)}
+                  onClick={() => onLanguageChange(lang.code as 'en' | 'hi')}
                   className={`text-sm ${
                     currentLang === lang.code 
                       ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" 
@@ -156,7 +156,7 @@ export function Header({ currentLang = 'en', onLanguageChange }: HeaderProps) {
                     variant={currentLang === lang.code ? "default" : "ghost"}
                     size="sm"
                     onClick={() => {
-                      onLanguageChange(lang.code);
+                      onLanguageChange(lang.code as 'en' | 'hi');
                       setMobileMenuOpen(false);
                     }}
                     className={`text-sm ${
