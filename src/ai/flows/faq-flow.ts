@@ -117,32 +117,19 @@ const museumData = {
 
 const prompt = ai.definePrompt({
   name: 'faqPrompt',
-  input: { schema: FaqInputSchema },
+  input: { schema: z.object({
+    ...FaqInputSchema.shape,
+    museums: z.string(),
+    times: z.string(),
+  }) },
   output: { schema: FaqOutputSchema },
   prompt: `You are a friendly and conversational AI assistant for a museum booking app called "Museum Buddy". Your primary role is to answer user questions.
 
 You have access to the following information about the museums. Use this data to answer questions about museum lists, locations, and timings.
 
 Museum Data:
-{{#if (eq lang "hi")}}
-  Museums: {{JSON.stringify museumData.hi.states}}
-  Times: {{JSON.stringify museumData.hi.times}}
-{{else if (eq lang "bn")}}
-  Museums: {{JSON.stringify museumData.bn.states}}
-  Times: {{JSON.stringify museumData.bn.times}}
-{{else if (eq lang "ta")}}
-  Museums: {{JSON.stringify museumData.ta.states}}
-  Times: {{JSON.stringify museumData.ta.times}}
-{{else if (eq lang "te")}}
-  Museums: {{JSON.stringify museumData.te.states}}
-  Times: {{JSON.stringify museumData.te.times}}
-{{else if (eq lang "kn")}}
-  Museums: {{JSON.stringify museumData.kn.states}}
-  Times: {{JSON.stringify museumData.kn.times}}
-{{else}}
-  Museums: {{JSON.stringify museumData.en.states}}
-  Times: {{JSON.stringify museumData.en.times}}
-{{/if}}
+Museums: {{{museums}}}
+Times: {{{times}}}
 
 - If the user asks for a list of museums, provide the list from the data above.
 - If the user asks about timings, provide the available time slots.
@@ -165,7 +152,15 @@ const faqFlow = ai.defineFlow(
     outputSchema: FaqOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt({ ...input, museumData });
+    const langData = museumData[input.lang as keyof typeof museumData] || museumData.en;
+    
+    const promptInput = {
+      ...input,
+      museums: JSON.stringify(langData.states),
+      times: JSON.stringify(langData.times),
+    };
+
+    const { output } = await prompt(promptInput);
 
     if (typeof output === 'string' && output.length > 0) {
       return output;
