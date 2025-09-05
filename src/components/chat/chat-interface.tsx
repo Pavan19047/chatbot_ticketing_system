@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Ticket, MessageCircleQuestion } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
@@ -18,9 +18,11 @@ import { getAnswer } from '@/ai/flows/faq-flow';
 const translations = {
   en: {
     welcome: "Hello! I'm Museum Buddy. How can I help you today?",
-    bookTickets: 'Book Tickets',
-    askQuestion: 'Ask a Question',
-    askMeAnything: 'What would you like to know about the museum?',
+    welcomeBooking: 'Welcome to Ticket Booking. Please select a state to begin.',
+    welcomeFaq: 'You can ask me anything about museums or general topics.',
+    bookingMode: 'Ticket Booking',
+    faqMode: 'Ask a Question',
+    askMeAnything: 'Ask me anything...',
     selectState: 'Great! Please select a state to see available museums.',
     selectMuseum: 'Awesome! Please select a museum from the list.',
     chooseExperience: 'Great! Which experience are you interested in?',
@@ -35,10 +37,6 @@ const translations = {
     orderSummary: 'Here is your order summary:',
     paymentSuccessful: 'Payment successful! 🎉',
     ticketIssued: 'Your digital ticket is ready. We look forward to seeing you!',
-    showTimes: 'Showtimes',
-    prices: 'Ticket Prices',
-    faqResponse: 'You can find information about our hours, location, and current exhibitions on our website.',
-    invalidSelection: "Sorry, I didn't understand that. Please choose one of the options.",
     times: ['10:00 AM', '12:00 PM', '2:00 PM', '4:00 PM'],
     states: {
         'Delhi': ['National Museum, New Delhi'],
@@ -54,9 +52,11 @@ const translations = {
   },
   hi: {
     welcome: 'नमस्ते! मैं म्यूजियम बडी हूं। मैं आज आपकी कैसे मदद कर सकता हूं?',
-    bookTickets: 'टिकट बुक करें',
-    askQuestion: 'प्रश्न पूछें',
-    askMeAnything: 'आप संग्रहालय के बारे में क्या जानना चाहेंगे?',
+    welcomeBooking: 'टिकट बुकिंग में आपका स्वागत है। शुरू करने के लिए कृपया एक राज्य चुनें।',
+    welcomeFaq: 'आप मुझसे संग्रहालयों या सामान्य विषयों के बारे में कुछ भी पूछ सकते हैं।',
+    bookingMode: 'टिकट बुकिंग',
+    faqMode: 'प्रश्न पूछें',
+    askMeAnything: 'मुझसे कुछ भी पूछें...',
     selectState: 'बहुत बढ़िया! उपलब्ध संग्रहालयों को देखने के लिए कृपया एक राज्य चुनें।',
     selectMuseum: 'बहुत बढ़िया! कृपया सूची में से एक संग्रहालय चुनें।',
     chooseExperience: 'बढ़िया! आप किस अनुभव में रुचि रखते हैं?',
@@ -71,10 +71,6 @@ const translations = {
     orderSummary: 'यह आपके आदेश का सारांश है:',
     paymentSuccessful: 'भुगतान सफल! 🎉',
     ticketIssued: 'आपका डिजिटल टिकट तैयार है। हम आपको देखने के लिए उत्सुक हैं!',
-    showTimes: 'शो के समय',
-    prices: 'टिकट की कीमतें',
-    faqResponse: 'आप हमारी वेबसाइट पर हमारे घंटे, स्थान और वर्तमान प्रदर्शनियों के बारे में जानकारी पा सकते हैं।',
-    invalidSelection: 'माफ़ कीजिए, मैं यह समझ नहीं पाया। कृपया विकल्पों में से एक चुनें।',
     times: ['सुबह 10:00', 'दोपहर 12:00', 'दोपहर 2:00', 'शाम 4:00'],
     states: {
       'दिल्ली': ['राष्ट्रीय संग्रहालय, नई दिल्ली'],
@@ -90,9 +86,11 @@ const translations = {
   },
   bn: {
     welcome: 'নমস্কার! আমি মিউজিয়াম বাডি। আমি আজ আপনাকে কিভাবে সাহায্য করতে পারি?',
-    bookTickets: 'টিকিট বুক করুন',
-    askQuestion: 'প্রশ্ন জিজ্ঞাসা করুন',
-    askMeAnything: 'আপনি জাদুঘর সম্পর্কে কি জানতে চান?',
+    welcomeBooking: 'টিকিট বুকিংয়ে স্বাগতম। শুরু করতে অনুগ্রহ করে একটি রাজ্য নির্বাচন করুন।',
+    welcomeFaq: 'আপনি আমার কাছে জাদুঘর বা সাধারণ বিষয় সম্পর্কে কিছু জিজ্ঞাসা করতে পারেন।',
+    bookingMode: 'টিকিট বুকিং',
+    faqMode: 'প্রশ্ন জিজ্ঞাসা করুন',
+    askMeAnything: 'আমাকে কিছু জিজ্ঞাসা করুন...',
     selectState: 'দারুণ! উপলব্ধ জাদুঘর দেখতে অনুগ্রহ করে একটি রাজ্য নির্বাচন করুন।',
     selectMuseum: 'দারুণ! অনুগ্রহ করে তালিকা থেকে একটি জাদুঘর নির্বাচন করুন।',
     chooseExperience: 'দারুণ! আপনি কোন تجربায় আগ্রহী?',
@@ -107,10 +105,6 @@ const translations = {
     orderSummary: 'এখানে আপনার অর্ডারের সারসংক্ষেপ:',
     paymentSuccessful: 'পেমেন্ট সফল! 🎉',
     ticketIssued: 'আপনার ডিজিটাল টিকিট প্রস্তুত। আমরা আপনাকে দেখার জন্য উন্মুখ!',
-    showTimes: 'প্রদর্শনের সময়',
-    prices: 'টিকিটের মূল্য',
-    faqResponse: 'আপনি আমাদের ওয়েবসাইটে আমাদের সময়, অবস্থান এবং বর্তমান প্রদর্শনী সম্পর্কে তথ্য পেতে পারেন।',
-    invalidSelection: 'দুঃখিত, আমি বুঝতে পারিনি। বিকল্পগুলো থেকে একটি বেছে নিন।',
     times: ['সকাল ১০:০০', 'দুপুর ১২:০০', 'দুপুর ২:০০', 'বিকাল ৪:০০'],
     states: {
         'দিল্লি': ['জাতীয় জাদুঘর, নতুন দিল্লি'],
@@ -126,9 +120,11 @@ const translations = {
   },
   ta: {
     welcome: 'வணக்கம்! நான் மியூசியம் படி. இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?',
-    bookTickets: 'டிக்கெட்டுகளை முன்பதிவு செய்யுங்கள்',
-    askQuestion: 'கேள்வி கேளுங்கள்',
-    askMeAnything: 'அருங்காட்சியகத்தைப் பற்றி நீங்கள் என்ன தெரிந்து கொள்ள விரும்புகிறீர்கள்?',
+    welcomeBooking: 'டிக்கெட் முன்பதிவுக்கு வரவேற்கிறோம். தொடங்க ஒரு மாநிலத்தைத் தேர்ந்தெடுக்கவும்.',
+    welcomeFaq: 'அருங்காட்சியகங்கள் அல்லது பொதுவான தலைப்புகள் பற்றி நீங்கள் என்னிடம் எதுவும் கேட்கலாம்.',
+    bookingMode: 'டிக்கெட் முன்பதிவு',
+    faqMode: 'கேள்வி கேளுங்கள்',
+    askMeAnything: 'என்னிடம் எதுவும் கேளுங்கள்...',
     selectState: 'அற்புதம்! அருங்காட்சியகங்களைக் காண ஒரு மாநிலத்தைத் தேர்ந்தெடுக்கவும்.',
     selectMuseum: 'அற்புதம்! பட்டியலிலிருந்து ஒரு அருங்காட்சியகத்தைத் தேர்ந்தெடுக்கவும்.',
     chooseExperience: 'அருமை! நீங்கள் எந்த அனுபவத்தில் ஆர்வமாக உள்ளீர்கள்?',
@@ -143,10 +139,6 @@ const translations = {
     orderSummary: 'உங்கள் ஆர்டர் சுருக்கம் இதோ:',
     paymentSuccessful: 'பணம் செலுத்துதல் வெற்றி! 🎉',
     ticketIssued: 'உங்கள் டிஜிட்டல் டிக்கெட் தயாராக உள்ளது. உங்களை சந்திப்பதை நாங்கள் ஆவலுடன் எதிர்பார்க்கிறோம்!',
-    showTimes: 'காட்சி நேரங்கள்',
-    prices: 'டிக்கெட் விலைகள்',
-    faqResponse: 'எங்கள் வலைத்தளத்தில் எங்கள் நேரம், இடம் மற்றும் தற்போதைய கண்காட்சிகள் பற்றிய தகவல்களை நீங்கள் காணலாம்.',
-    invalidSelection: 'மன்னிக்கவும், எனக்குப் புரியவில்லை. விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும்.',
     times: ['காலை 10:00', 'மதியம் 12:00', 'மதியம் 2:00', 'மாலை 4:00'],
     states: {
         'டெல்லி': ['தேசிய அருங்காட்சியகம், புது டெல்லி'],
@@ -162,9 +154,11 @@ const translations = {
   },
   te: {
     welcome: 'నమస్కారం! నేను మ్యూజియం బడ్డీని. ఈ రోజు నేను మీకు ఎలా సహాయపడగలను?',
-    bookTickets: 'టిక్కెట్లను బుక్ చేయండి',
-    askQuestion: 'ప్రశ్న అడగండి',
-    askMeAnything: 'మీరు మ్యూజియం గురించి ఏమి తెలుసుకోవాలనుకుంటున్నారు?',
+    welcomeBooking: 'టికెట్ బుకింగ్‌కు స్వాగతం. ప్రారంభించడానికి దయచేసి ఒక రాష్ట్రాన్ని ఎంచుకోండి.',
+    welcomeFaq: 'మీరు మ్యూజియంలు లేదా సాధారణ అంశాల గురించి నన్ను ఏదైనా అడగవచ్చు.',
+    bookingMode: 'టికెట్ బుకింగ్',
+    faqMode: 'ప్రశ్న అడగండి',
+    askMeAnything: 'నన్ను ఏదైనా అడగండి...',
     selectState: 'అద్భుతం! అందుబాటులో ఉన్న మ్యూజియంలను చూడటానికి దయచేసి ఒక రాష్ట్రాన్ని ఎంచుకోండి.',
     selectMuseum: 'అద్భుతం! దయచేసి జాబితా నుండి ఒక మ్యూజియంను ఎంచుకోండి.',
     chooseExperience: 'అద్భుతం! మీరు ఏ అనుభవంలో ఆసక్తిగా ఉన్నారు?',
@@ -179,10 +173,6 @@ const translations = {
     orderSummary: 'ఇదిగో మీ ఆర్డర్ సారాంశం:',
     paymentSuccessful: 'చెల్లింపు విజయవంతమైంది! 🎉',
     ticketIssued: 'మీ డిజిటల్ టికెట్ సిద్ధంగా ఉంది. మిమ్మల్ని చూడటానికి మేము ఎదురుచూస్తున్నాము!',
-    showTimes: 'ప్రదర్శన సమయాలు',
-    prices: 'టికెట్ ధరలు',
-    faqResponse: 'మీరు మా గంటలు, ప్రదేశం మరియు ప్రస్తుత ప్రదర్శనల గురించి మా వెబ్‌సైట్‌లో సమాచారాన్ని కనుగొనవచ్చు.',
-    invalidSelection: 'క్షమించండి, నాకు అర్థం కాలేదు. దయచేసి ఎంపికలలో ఒకదాన్ని ఎంచుకోండి.',
     times: ['ఉదయం 10:00', 'మధ్యాహ్నం 12:00', 'మధ్యాహ్నం 2:00', 'సాయంత్రం 4:00'],
     states: {
         'ఢిల్లీ': ['జాతీయ మ్యూజియం, న్యూఢిల్లీ'],
@@ -198,9 +188,11 @@ const translations = {
   },
   kn: {
     welcome: 'ನಮಸ್ಕಾರ! ನಾನು ಮ್ಯೂಸಿಯಂ ಬಡ್ಡಿ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
-    bookTickets: 'ಟಿಕೆಟ್ ಬುಕ್ ಮಾಡಿ',
-    askQuestion: 'ಪ್ರಶ್ನೆ ಕೇಳಿ',
-    askMeAnything: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯದ ಬಗ್ಗೆ ನೀವು ಏನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ?',
+    welcomeBooking: 'ಟಿಕೆಟ್ ಬುಕಿಂಗ್‌ಗೆ ಸುಸ್ವಾಗತ. ಪ್ರಾರಂಭಿಸಲು ದಯವಿಟ್ಟು ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
+    welcomeFaq: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯಗಳು ಅಥವಾ ಸಾಮಾನ್ಯ ವಿಷಯಗಳ ಬಗ್ಗೆ ನೀವು ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಬಹುದು.',
+    bookingMode: 'ಟಿಕೆಟ್ ಬುಕಿಂಗ್',
+    faqMode: 'ಪ್ರಶ್ನೆ ಕೇಳಿ',
+    askMeAnything: 'ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಿ...',
     selectState: 'ಅದ್ಭುತ! ಲಭ್ಯವಿರುವ ವಸ್ತುಸಂಗ್ರಹಾಲಯಗಳನ್ನು ನೋಡಲು ದಯವಿಟ್ಟು ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
     selectMuseum: 'ಅದ್ಭುತ! ದಯವಿಟ್ಟು ಪಟ್ಟಿಯಿಂದ ವಸ್ತುಸಂಗ್ರಹಾಲಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
     chooseExperience: 'ಅದ್ಭುತ! ನೀವು ಯಾವ ಅನುಭವದಲ್ಲಿ ಆಸಕ್ತಿ ಹೊಂದಿದ್ದೀರಿ?',
@@ -215,10 +207,6 @@ const translations = {
     orderSummary: 'ನಿಮ್ಮ ಆದೇಶದ ಸಾರಾಂಶ ಇಲ್ಲಿದೆ:',
     paymentSuccessful: 'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿದೆ! 🎉',
     ticketIssued: 'ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಟಿಕೆಟ್ ಸಿದ್ಧವಾಗಿದೆ. ನಿಮ್ಮನ್ನು ನೋಡಲು ನಾವು ಎದುರು ನೋಡುತ್ತಿದ್ದೇವೆ!',
-    showTimes: 'ಪ್ರದರ್ಶನ ಸಮಯಗಳು',
-    prices: 'ಟಿಕೆಟ್ ದರಗಳು',
-    faqResponse: 'ನೀವು ನಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ನಮ್ಮ ಸಮಯ, ಸ್ಥಳ ಮತ್ತು ಪ್ರಸ್ತುತ ಪ್ರದರ್ಶನಗಳ ಬಗ್ಗೆ ಮಾಹಿತಿಯನ್ನು ಕಾಣಬಹುದು.',
-    invalidSelection: 'ಕ್ಷಮಿಸಿ, ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಆಯ್ಕೆಗಳಲ್ಲಿ ಒಂದನ್ನು ಆರಿಸಿ.',
     times: ['ಬೆಳಿಗ್ಗೆ 10:00', 'ಮಧ್ಯಾಹ್ನ 12:00', 'ಮಧ್ಯಾಹ್ನ 2:00', 'ಸಂಜೆ 4:00'],
     states: {
         'ದೆಹಲಿ': ['ರಾಷ್ಟ್ರೀಯ ವಸ್ತುಸಂಗ್ರಹಾಲಯ, ನವದೆಹಲಿ'],
@@ -236,12 +224,15 @@ const translations = {
 
 type ChatStep =
   | 'start' | 'select_state' | 'select_museum' | 'select_experience' | 'select_date' | 'select_time'
-  | 'select_quantity' | 'confirm_order' | 'payment' | 'ticket_issued' | 'faq';
+  | 'select_quantity' | 'confirm_order' | 'payment' | 'ticket_issued';
+
+type ChatMode = 'booking' | 'faq';
 
 export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn' }) {
   const t = translations[lang];
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState<ChatStep>('start');
+  const [mode, setMode] = useState<ChatMode>('booking');
   const [order, setOrder] = useState<TicketOrder>({
     state: null,
     museum: null,
@@ -252,7 +243,6 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   });
   const [isBotTyping, setIsBotTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const initialLoadRef = useRef(true);
 
   const addMessage = (sender: 'user' | 'bot', content: React.ReactNode) => {
     const id = `${Date.now()}-${Math.random()}`;
@@ -262,11 +252,11 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
     }
   };
   
-  const handleBotResponse = (callback: () => void) => {
+  const handleBotResponse = (callback: () => void, delay?: number) => {
     setTimeout(() => {
       setIsBotTyping(false);
       callback();
-    }, 1000 + Math.random() * 500);
+    }, delay ?? 1000 + Math.random() * 500);
   }
 
   useEffect(() => {
@@ -274,29 +264,29 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   }, [messages, isBotTyping]);
+  
+  const resetChat = (newMode: ChatMode) => {
+    setMessages([]);
+    if (newMode === 'booking') {
+        addMessage('bot', t.welcomeBooking);
+        setStep('select_state');
+    } else {
+        addMessage('bot', t.welcomeFaq);
+        setStep('start');
+    }
+  }
 
   useEffect(() => {
-    if (initialLoadRef.current && messages.length === 0) {
-        addMessage('bot', t.welcome);
-        handleBotResponse(() => setStep('start'));
-        initialLoadRef.current = false;
-    }
+    resetChat(mode);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length]);
+  }, [mode, lang]);
 
-  const handleStartSelection = (selection: 'book' | 'faq') => {
-    addMessage('user', selection === 'book' ? t.bookTickets : t.askQuestion);
-    handleBotResponse(() => {
-      if (selection === 'book') {
-        addMessage('bot', t.selectState);
-        setStep('select_state');
-      } else {
-        addMessage('bot', t.askMeAnything);
-        setStep('faq');
-      }
-    });
+  const handleModeChange = (newMode: ChatMode) => {
+    if (mode !== newMode) {
+      setMode(newMode);
+    }
   };
-
+  
   const handleFaqQuestion = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -306,18 +296,15 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
     addMessage('user', question);
     e.currentTarget.reset();
     
-    const answer = await getAnswer({question, lang});
-    
-    setIsBotTyping(false);
-
-    if (answer === 'BOOK_TICKETS') {
-        addMessage('bot', t.selectState);
-        setStep('select_state');
-    } else {
-        addMessage('bot', answer);
-        // After answering, we can guide the user back to the main options.
-        handleBotResponse(() => setStep('start'));
-    }
+    handleBotResponse(async () => {
+      const answer = await getAnswer({question, lang});
+      if (answer === 'BOOK_TICKETS') {
+          addMessage('bot', "It looks like you want to book tickets. I'll switch you to booking mode.");
+          handleBotResponse(() => handleModeChange('booking'), 1500);
+      } else {
+          addMessage('bot', answer);
+      }
+    }, 0);
   }
   
   const handleStateSelection = (state: string) => {
@@ -391,28 +378,46 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
         setStep('ticket_issued');
     });
   }
+  
+  const renderModeToggle = () => (
+    <div className="flex justify-center p-2">
+        <div className="flex items-center gap-1 rounded-full border bg-card p-1">
+            <Button 
+                variant={mode === 'booking' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handleModeChange('booking')}
+                className={cn('rounded-full', {'shadow-sm': mode === 'booking'})}
+            >
+                <Ticket className="mr-2" />{t.bookingMode}
+            </Button>
+            <Button 
+                variant={mode === 'faq' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handleModeChange('faq')}
+                className={cn('rounded-full', {'shadow-sm': mode === 'faq'})}
+            >
+                <MessageCircleQuestion className="mr-2" />{t.faqMode}
+            </Button>
+        </div>
+    </div>
+  );
 
   const renderInput = () => {
+    if (mode === 'faq') {
+        return (
+            <form onSubmit={handleFaqQuestion} className="flex gap-2 p-2">
+                <Input name="question" placeholder={t.askMeAnything} className="flex-1" />
+                <Button type="submit" size="icon" className="soft-shadow">
+                    <Send />
+                </Button>
+            </form>
+        );
+    }
+    
     switch (step) {
-      case 'start':
-        return (
-          <div className="flex gap-2 p-2">
-            <Button onClick={() => handleStartSelection('book')} className="w-full soft-shadow">{t.bookTickets}</Button>
-            <Button onClick={() => handleStartSelection('faq')} variant="secondary" className="w-full soft-shadow">{t.askQuestion}</Button>
-          </div>
-        );
-      case 'faq':
-        return (
-          <form onSubmit={handleFaqQuestion} className="flex gap-2 p-2">
-            <Input name="question" placeholder={t.askMeAnything} className="flex-1" />
-            <Button type="submit" size="icon" className="soft-shadow">
-              <Send />
-            </Button>
-          </form>
-        );
       case 'select_state':
         return (
-          <div className="grid grid-cols-1 gap-2 p-2 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-2 p-2 sm:grid-cols-2 md:grid-cols-3">
             {Object.keys(t.states).map(state => (
               <Button key={state} variant="secondary" onClick={() => handleStateSelection(state)} className="soft-shadow text-center">{state}</Button>
             ))}
@@ -466,7 +471,8 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
           return <div className="p-2"><Button onClick={handlePayment} className="w-full soft-shadow">{t.proceedToPayment}</Button></div>;
       case 'payment':
           return <PaymentDialog open={true} onPaymentSuccess={handlePaymentSuccess} onOpenChange={() => setStep('confirm_order')} />;
-
+      case 'ticket_issued':
+          return <div className="p-2 text-center text-sm text-muted-foreground">You can switch modes or start a new booking.</div>;
       default:
         return null;
     }
@@ -484,8 +490,11 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
             {isBotTyping && <motion.div key="typing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}><ChatBubble sender="bot">...</ChatBubble></motion.div>}
         </AnimatePresence>
       </div>
-      <div className="border-t bg-background p-2">
-        {renderInput()}
+      <div className="border-t bg-background">
+        {renderModeToggle()}
+        <div className="p-2">
+            {renderInput()}
+        </div>
       </div>
     </div>
   );
