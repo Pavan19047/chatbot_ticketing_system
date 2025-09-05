@@ -228,9 +228,11 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   }, [messages, isBotTyping]);
 
   useEffect(() => {
-    addMessage('bot', t.welcome);
-    handleBotResponse(() => setStep('start'));
-  }, []);
+    if (messages.length === 0) {
+      addMessage('bot', t.welcome);
+      handleBotResponse(() => setStep('start'));
+    }
+  }, [messages.length, t.welcome]);
 
   const handleStartSelection = (selection: 'book' | 'faq') => {
     addMessage('user', selection === 'book' ? t.bookTickets : t.askQuestion);
@@ -379,7 +381,7 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
                     <ChatBubble sender={msg.sender}>{msg.content}</ChatBubble>
                 </motion.div>
             ))}
-            {isBotTyping && <ChatBubble sender="bot">...</ChatBubble>}
+            {isBotTyping && <motion.div key="typing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}><ChatBubble sender="bot">...</ChatBubble></motion.div>}
         </AnimatePresence>
       </div>
       <div className="border-t bg-background p-2">
