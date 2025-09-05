@@ -33,7 +33,7 @@ export function PaymentDialog({ open, onOpenChange, onPaymentSuccess }: PaymentD
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="neubrutalist-border neubrutalist-shadow">
+      <DialogContent className="rounded-xl card-shadow">
         <DialogHeader>
           <DialogTitle>Secure Payment</DialogTitle>
           <DialogDescription>
@@ -46,25 +46,25 @@ export function PaymentDialog({ open, onOpenChange, onPaymentSuccess }: PaymentD
               <Label htmlFor="card-number" className="text-right">
                 Card Number
               </Label>
-              <Input id="card-number" defaultValue="4242 4242 4242 4242" className="col-span-3 neubrutalist-border" />
+              <Input id="card-number" defaultValue="4242 4242 4242 4242" className="col-span-3" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="expiry" className="text-right">
                 Expiry
               </Label>
-              <Input id="expiry" defaultValue="12/26" className="col-span-3 neubrutalist-border" />
+              <Input id="expiry" defaultValue="12/26" className="col-span-3" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="cvc" className="text-right">
                 CVC
               </Label>
-              <Input id="cvc" defaultValue="123" className="col-span-3 neubrutalist-border" />
+              <Input id="cvc" defaultValue="123" className="col-span-3" />
             </div>
           </div>
           <DialogFooter>
             <Button
               type="submit"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm"
+              className="w-full soft-shadow"
               disabled={isProcessing}
             >
               {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

@@ -119,7 +119,7 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   };
 
   return (
-    <Card className="my-2 neubrutalist-border neubrutalist-shadow bg-background overflow-hidden">
+    <Card className="my-2 rounded-xl card-shadow bg-background overflow-hidden">
       <div ref={ticketRef} className="bg-white">
           <CardHeader className="bg-primary text-primary-foreground p-4">
             <CardTitle className="flex items-center gap-2 text-lg">
@@ -150,18 +150,18 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
                     alt="QR Code"
                     width={150}
                     height={150}
-                    className="neubrutalist-border"
+                    className="rounded-lg"
                     data-ai-hint="qr code"
                 />
             </div>
           </CardContent>
       </div>
-      <CardFooter className="p-2 bg-slate-50 border-t-2 border-black">
+      <CardFooter className="p-2 bg-slate-50 border-t">
           <div className="flex w-full gap-2">
-            <Button onClick={handleDownloadJpg} variant="secondary" className="w-full neubrutalist-border neubrutalist-shadow-sm">
+            <Button onClick={handleDownloadJpg} variant="secondary" className="w-full soft-shadow">
                 <Download className="mr-2" /> {t.downloadJpg}
             </Button>
-            <Button onClick={handleDownloadPdf} variant="secondary" className="w-full neubrutalist-border neubrutalist-shadow-sm">
+            <Button onClick={handleDownloadPdf} variant="secondary" className="w-full soft-shadow">
                 <Download className="mr-2" /> {t.downloadPdf}
             </Button>
           </div>

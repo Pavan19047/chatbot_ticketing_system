@@ -77,7 +77,7 @@ export function TicketSummary({ order, lang }: TicketSummaryProps) {
   const totalCost = order.tickets.adult * adultPrice + order.tickets.child * childPrice;
 
   return (
-    <Card className="my-2 neubrutalist-border bg-white">
+    <Card className="my-2 rounded-xl card-shadow bg-card">
       <CardHeader>
         <CardTitle className="text-lg">{t.title}</CardTitle>
       </CardHeader>

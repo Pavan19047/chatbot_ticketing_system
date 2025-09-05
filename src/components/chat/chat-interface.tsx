@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import type { Message, TicketOrder } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ChatBubble } from './chat-bubble';
 import { Calendar } from '../ui/calendar';
 import { TicketSummary } from './ticket-summary';
@@ -313,55 +312,55 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
       case 'start':
         return (
           <div className="flex gap-2 p-2">
-            <Button onClick={() => handleStartSelection('book')} className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.bookTickets}</Button>
-            <Button onClick={() => handleStartSelection('faq')} variant="secondary" className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.askQuestion}</Button>
+            <Button onClick={() => handleStartSelection('book')} className="w-full soft-shadow">{t.bookTickets}</Button>
+            <Button onClick={() => handleStartSelection('faq')} variant="secondary" className="w-full soft-shadow">{t.askQuestion}</Button>
           </div>
         );
       case 'select_museum':
         return (
           <div className="grid grid-cols-1 gap-2 p-2 sm:grid-cols-2">
-            {t.museums.map(museum => <Button key={museum} onClick={() => handleMuseumSelection(museum)} className="neubrutalist-border neubrutalist-shadow-sm text-center">{museum}</Button>)}
+            {t.museums.map(museum => <Button key={museum} variant="secondary" onClick={() => handleMuseumSelection(museum)} className="soft-shadow text-center">{museum}</Button>)}
           </div>
         );
       case 'select_experience':
         return (
           <div className="flex gap-2 p-2">
-            <Button onClick={() => handleExperienceSelection('general')} className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.generalAdmission}</Button>
-            <Button onClick={() => handleExperienceSelection('special')} className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.specialExhibition}</Button>
+            <Button onClick={() => handleExperienceSelection('general')} className="w-full soft-shadow">{t.generalAdmission}</Button>
+            <Button onClick={() => handleExperienceSelection('special')} variant="secondary" className="w-full soft-shadow">{t.specialExhibition}</Button>
           </div>
         );
       case 'select_date':
-          return <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><Calendar mode="single" onSelect={handleDateSelection} className="m-4 neubrutalist-border" selected={order.date ?? undefined} /></motion.div>
+          return <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center"><Calendar mode="single" onSelect={handleDateSelection} className="m-4 rounded-lg border card-shadow" selected={order.date ?? undefined} /></motion.div>
       case 'select_time':
         return (
           <div className="grid grid-cols-2 gap-2 p-2">
-            {t.times.map(time => <Button key={time} onClick={() => handleTimeSelection(time)} className="neubrutalist-border neubrutalist-shadow-sm">{time}</Button>)}
+            {t.times.map(time => <Button key={time} variant="secondary" onClick={() => handleTimeSelection(time)} className="soft-shadow">{time}</Button>)}
           </div>
         );
       case 'select_quantity':
         return (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4 rounded-md neubrutalist-border bg-white p-4">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4 rounded-md border bg-card p-4 card-shadow">
                 <div className="flex items-center justify-between">
                     <span className="font-medium">{t.adult}</span>
                     <div className="flex items-center gap-2">
-                        <Button size="icon" variant="outline" className="neubrutalist-border" onClick={() => handleQuantityChange('adult', order.tickets.adult - 1)}>-</Button>
+                        <Button size="icon" variant="outline" onClick={() => handleQuantityChange('adult', order.tickets.adult - 1)}>-</Button>
                         <span className="w-8 text-center">{order.tickets.adult}</span>
-                        <Button size="icon" variant="outline" className="neubrutalist-border" onClick={() => handleQuantityChange('adult', order.tickets.adult + 1)}>+</Button>
+                        <Button size="icon" variant="outline" onClick={() => handleQuantityChange('adult', order.tickets.adult + 1)}>+</Button>
                     </div>
                 </div>
                  <div className="flex items-center justify-between">
                     <span className="font-medium">{t.child}</span>
                     <div className="flex items-center gap-2">
-                        <Button size="icon" variant="outline" className="neubrutalist-border" onClick={() => handleQuantityChange('child', order.tickets.child - 1)}>-</Button>
+                        <Button size="icon" variant="outline" onClick={() => handleQuantityChange('child', order.tickets.child - 1)}>-</Button>
                         <span className="w-8 text-center">{order.tickets.child}</span>
-                        <Button size="icon" variant="outline" className="neubrutalist-border" onClick={() => handleQuantityChange('child', order.tickets.child + 1)}>+</Button>
+                        <Button size="icon" variant="outline" onClick={() => handleQuantityChange('child', order.tickets.child + 1)}>+</Button>
                     </div>
                 </div>
-                <Button onClick={handleConfirmQuantity} className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.proceedToPayment}</Button>
+                <Button onClick={handleConfirmQuantity} className="w-full soft-shadow">{t.proceedToPayment}</Button>
             </motion.div>
         );
       case 'confirm_order':
-          return <div className="p-2"><Button onClick={handlePayment} className="w-full neubrutalist-border neubrutalist-shadow-sm">{t.proceedToPayment}</Button></div>;
+          return <div className="p-2"><Button onClick={handlePayment} className="w-full soft-shadow">{t.proceedToPayment}</Button></div>;
       case 'payment':
           return <PaymentDialog open={true} onPaymentSuccess={handlePaymentSuccess} onOpenChange={() => setStep('confirm_order')} />;
 
@@ -382,7 +381,7 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
             {isBotTyping && <ChatBubble sender="bot">...</ChatBubble>}
         </AnimatePresence>
       </div>
-      <div className="neubrutalist-border border-t-2 bg-background p-2">
+      <div className="border-t bg-background p-2">
         {renderInput()}
       </div>
     </div>

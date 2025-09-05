@@ -18,7 +18,7 @@ const shows = [
 
 export function PopularShows() {
   return (
-    <div className="neubrutalist-border rounded-lg overflow-hidden">
+    <div className="rounded-lg overflow-hidden border">
       <Table>
         <TableHeader>
           <TableRow className="bg-muted hover:bg-muted">
@@ -31,7 +31,7 @@ export function PopularShows() {
             <TableRow key={show.name}>
               <TableCell>
                 <div className="font-medium">{show.name}</div>
-                <Badge variant="outline" className="mt-1 neubrutalist-border">{show.type}</Badge>
+                <Badge variant="outline" className="mt-1">{show.type}</Badge>
               </TableCell>
               <TableCell className="text-right font-mono">{show.tickets}</TableCell>
             </TableRow>

@@ -14,7 +14,7 @@ export default function DashboardPage() {
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="neubrutalist-border neubrutalist-shadow">
+        <Card className="rounded-xl card-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -26,7 +26,7 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        <Card className="neubrutalist-border neubrutalist-shadow">
+        <Card className="rounded-xl card-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Tickets Sold</CardTitle>
             <Ticket className="h-4 w-4 text-muted-foreground" />
@@ -38,7 +38,7 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        <Card className="neubrutalist-border neubrutalist-shadow">
+        <Card className="rounded-xl card-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Popular Time</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -53,7 +53,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-5">
-        <Card className="col-span-1 lg:col-span-3 neubrutalist-border neubrutalist-shadow">
+        <Card className="col-span-1 lg:col-span-3 rounded-xl card-shadow">
           <CardHeader>
             <CardTitle>Tickets Sold Per Day</CardTitle>
           </CardHeader>
@@ -61,7 +61,7 @@ export default function DashboardPage() {
             <TicketsSoldChart />
           </CardContent>
         </Card>
-        <Card className="col-span-1 lg:col-span-2 neubrutalist-border neubrutalist-shadow">
+        <Card className="col-span-1 lg:col-span-2 rounded-xl card-shadow">
           <CardHeader>
             <CardTitle>Most Popular Shows</CardTitle>
           </CardHeader>

@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md neubrutalist-border neubrutalist-shadow">
+      <Card className="w-full max-w-md rounded-xl card-shadow">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Ticket className="h-8 w-8" />
@@ -29,42 +29,47 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=en">English</Link>
             </Button>
             <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              variant="secondary"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=hi">हिन्दी</Link>
             </Button>
              <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              variant="secondary"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=bn">বাংলা</Link>
             </Button>
              <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              variant="secondary"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=ta">தமிழ்</Link>
             </Button>
              <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              variant="secondary"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=te">తెలుగు</Link>
             </Button>
             <Button
               asChild
               size="lg"
-              className="w-full neubrutalist-border neubrutalist-shadow-sm hover:neubrutalist-shadow transition-shadow"
+              variant="secondary"
+              className="w-full soft-shadow hover:shadow-lg transition-shadow"
             >
               <Link href="/chat?lang=kn">ಕನ್ನಡ</Link>
             </Button>
