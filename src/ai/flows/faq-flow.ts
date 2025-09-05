@@ -27,7 +27,7 @@ const prompt = ai.definePrompt(
     {
         name: 'faqPrompt',
         input: { schema: FaqInputSchema },
-        output: { schema: FaqOutputSchema },
+        output: { schema: FaqOutputSchema.nullable() },
         prompt: `You are a helpful assistant for a museum. A user is asking a question. 
         
         Answer the following question in the same language it was asked.
