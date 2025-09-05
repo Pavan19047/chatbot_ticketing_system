@@ -1,23 +1,26 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { Send } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 import type { Message, TicketOrder } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { ChatBubble } from './chat-bubble';
 import { Calendar } from '../ui/calendar';
 import { TicketSummary } from './ticket-summary';
 import { PaymentDialog } from './payment-dialog';
 import { DigitalTicket } from './digital-ticket';
+import { getAnswer } from '@/ai/flows/faq-flow';
 
 const translations = {
   en: {
     welcome: "Hello! I'm Museum Buddy. How can I help you today?",
     bookTickets: 'Book Tickets',
     askQuestion: 'Ask a Question',
+    askMeAnything: 'What would you like to know about the museum?',
     selectMuseum: 'Awesome! Please select a museum.',
     chooseExperience: 'Great! Which experience are you interested in?',
     generalAdmission: 'General Admission',
@@ -47,6 +50,7 @@ const translations = {
     welcome: 'नमस्ते! मैं म्यूजियम बडी हूं। मैं आज आपकी कैसे मदद कर सकता हूं?',
     bookTickets: 'टिकट बुक करें',
     askQuestion: 'प्रश्न पूछें',
+    askMeAnything: 'आप संग्रहालय के बारे में क्या जानना चाहेंगे?',
     selectMuseum: 'बहुत बढ़िया! कृपया एक संग्रहालय चुनें।',
     chooseExperience: 'बढ़िया! आप किस अनुभव में रुचि रखते हैं?',
     generalAdmission: 'सामान्य प्रवेश',
@@ -76,6 +80,7 @@ const translations = {
     welcome: 'নমস্কার! আমি মিউজিয়াম বাডি। আমি আজ আপনাকে কিভাবে সাহায্য করতে পারি?',
     bookTickets: 'টিকিট বুক করুন',
     askQuestion: 'প্রশ্ন জিজ্ঞাসা করুন',
+    askMeAnything: 'আপনি জাদুঘর সম্পর্কে কি জানতে চান?',
     selectMuseum: 'দারুণ! অনুগ্রহ করে একটি জাদুঘর নির্বাচন করুন।',
     chooseExperience: 'দারুণ! আপনি কোন অভিজ্ঞতায় আগ্রহী?',
     generalAdmission: 'সাধারণ ভর্তি',
@@ -105,6 +110,7 @@ const translations = {
     welcome: 'வணக்கம்! நான் மியூசியம் படி. இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?',
     bookTickets: 'டிக்கெட்டுகளை முன்பதிவு செய்யுங்கள்',
     askQuestion: 'கேள்வி கேளுங்கள்',
+    askMeAnything: 'அருங்காட்சியகத்தைப் பற்றி நீங்கள் என்ன தெரிந்து கொள்ள விரும்புகிறீர்கள்?',
     selectMuseum: 'அற்புதம்! அருங்காட்சியகத்தைத் தேர்ந்தெடுக்கவும்.',
     chooseExperience: 'அருமை! நீங்கள் எந்த அனுபவத்தில் ஆர்வமாக உள்ளீர்கள்?',
     generalAdmission: 'பொது அனுமதி',
@@ -134,6 +140,7 @@ const translations = {
     welcome: 'నమస్కారం! నేను మ్యూజియం బడ్డీని. ఈ రోజు నేను మీకు ఎలా సహాయపడగలను?',
     bookTickets: 'టిక్కెట్లను బుక్ చేయండి',
     askQuestion: 'ప్రశ్న అడగండి',
+    askMeAnything: 'మీరు మ్యూజియం గురించి ఏమి తెలుసుకోవాలనుకుంటున్నారు?',
     selectMuseum: 'అద్భుతం! దయచేసి ఒక మ్యూజియంను ఎంచుకోండి.',
     chooseExperience: 'అద్భుతం! మీరు ఏ అనుభవంలో ఆసక్తిగా ఉన్నారు?',
     generalAdmission: 'సాధారణ ప్రవేశం',
@@ -163,6 +170,7 @@ const translations = {
     welcome: 'ನಮಸ್ಕಾರ! ನಾನು ಮ್ಯೂಸಿಯಂ ಬಡ್ಡಿ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
     bookTickets: 'ಟಿಕೆಟ್ ಬುಕ್ ಮಾಡಿ',
     askQuestion: 'ಪ್ರಶ್ನೆ ಕೇಳಿ',
+    askMeAnything: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯದ ಬಗ್ಗೆ ನೀವು ಏನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ?',
     selectMuseum: 'ಅದ್ಭುತ! ದಯವಿಟ್ಟು ವಸ್ತುಸಂಗ್ರಹಾಲಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
     chooseExperience: 'ಅದ್ಭುತ! ನೀವು ಯಾವ ಅನುಭವದಲ್ಲಿ ಆಸಕ್ತಿ ಹೊಂದಿದ್ದೀರಿ?',
     generalAdmission: 'ಸಾಮಾನ್ಯ ಪ್ರವೇಶ',
@@ -207,11 +215,14 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   });
   const [isBotTyping, setIsBotTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const initialLoadRef = useRef(true);
 
   const addMessage = (sender: 'user' | 'bot', content: React.ReactNode) => {
     const id = `${Date.now()}-${Math.random()}`;
     setMessages(prev => [...prev, { id, sender, content }]);
-    setIsBotTyping(sender === 'user');
+    if (sender === 'user') {
+      setIsBotTyping(true);
+    }
   };
   
   const handleBotResponse = (callback: () => void) => {
@@ -228,12 +239,13 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   }, [messages, isBotTyping]);
 
   useEffect(() => {
-    if (messages.length === 0) {
+    if (initialLoadRef.current && messages.length === 0) {
       addMessage('bot', t.welcome);
       handleBotResponse(() => setStep('start'));
+      initialLoadRef.current = false;
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [messages.length]);
 
   const handleStartSelection = (selection: 'book' | 'faq') => {
     addMessage('user', selection === 'book' ? t.bookTickets : t.askQuestion);
@@ -242,11 +254,27 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
         addMessage('bot', t.selectMuseum);
         setStep('select_museum');
       } else {
-        addMessage('bot', t.faqResponse);
-        setStep('start');
+        addMessage('bot', t.askMeAnything);
+        setStep('faq');
       }
     });
   };
+
+  const handleFaqQuestion = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const question = formData.get('question') as string;
+    if (!question) return;
+
+    addMessage('user', question);
+    e.currentTarget.reset();
+    
+    const answer = await getAnswer({question, lang});
+    
+    setIsBotTyping(false);
+    addMessage('bot', answer);
+    handleBotResponse(() => setStep('start'));
+  }
   
   const handleMuseumSelection = (museum: string) => {
     addMessage('user', museum);
@@ -319,6 +347,15 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
             <Button onClick={() => handleStartSelection('book')} className="w-full soft-shadow">{t.bookTickets}</Button>
             <Button onClick={() => handleStartSelection('faq')} variant="secondary" className="w-full soft-shadow">{t.askQuestion}</Button>
           </div>
+        );
+      case 'faq':
+        return (
+          <form onSubmit={handleFaqQuestion} className="flex gap-2 p-2">
+            <Input name="question" placeholder={t.askMeAnything} className="flex-1" />
+            <Button type="submit" size="icon" className="soft-shadow">
+              <Send />
+            </Button>
+          </form>
         );
       case 'select_museum':
         return (
