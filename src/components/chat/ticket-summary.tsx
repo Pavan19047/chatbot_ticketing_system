@@ -4,86 +4,41 @@ import { Separator } from '../ui/separator';
 
 interface TicketSummaryProps {
   order: TicketOrder;
-  lang: 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn';
+  lang: 'en' | 'hi';
 }
 
 const translations = {
   en: {
     title: 'Order Summary',
-    museum: 'Museum',
-    experience: 'Experience',
+    event: 'Event',
+    venue: 'Venue',
     date: 'Date',
     time: 'Time',
-    adultTickets: 'Adult Tickets',
-    childTickets: 'Child Tickets',
+    regularTickets: 'Regular Tickets',
+    premiumTickets: 'Premium Tickets',
     total: 'Total',
     state: 'State',
+    city: 'City',
   },
   hi: {
     title: 'आदेश सारांश',
-    museum: 'संग्रहालय',
-    experience: 'अनुभव',
+    event: 'इवेंट',
+    venue: 'स्थान',
     date: 'तारीख',
     time: 'समय',
-    adultTickets: 'वयस्क टिकट',
-    childTickets: 'बच्चे का टिकट',
+    regularTickets: 'नियमित टिकट',
+    premiumTickets: 'प्रीमियम टिकट',
     total: 'कुल',
     state: 'राज्य',
+    city: 'शहर',
   },
-  bn: {
-      title: 'অর্ডার সারাংশ',
-      museum: 'জাদুঘর',
-      experience: 'অভিজ্ঞতা',
-      date: 'তারিখ',
-      time: 'সময়',
-      adultTickets: 'প্রাপ্তবয়স্কদের টিকিট',
-      childTickets: 'শিশুদের টিকিট',
-      total: 'মোট',
-      state: 'রাজ্য',
-  },
-  ta: {
-      title: 'ஆர்டர் சுருக்கம்',
-      museum: 'அருங்காட்சியகம்',
-      experience: 'அனுபவம்',
-      date: 'தேதி',
-      time: 'நேரம்',
-      adultTickets: 'பெரியவர் டிக்கெட்டுகள்',
-      childTickets: 'குழந்தை டிக்கெட்டுகள்',
-      total: 'மொத்தம்',
-      state: 'மாநிலம்',
-  },
-  te: {
-      title: 'ఆర్డర్ సారాంశం',
-      museum: 'మ్యూజియం',
-      experience: 'అనుభవం',
-      date: 'తేదీ',
-      time: 'సమయం',
-      adultTickets: 'పెద్దల టిక్కెట్లు',
-      childTickets: 'పిల్లల టిక్కెట్లు',
-      total: 'మొత్తం',
-      state: 'రాష్ట్రం',
-  },
-  kn: {
-      title: 'ಆದೇಶದ ಸಾರಾಂಶ',
-      museum: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯ',
-      experience: 'ಅನುಭವ',
-      date: 'ದಿನಾಂಕ',
-      time: 'ಸಮಯ',
-      adultTickets: 'ವಯಸ್ಕರ ಟಿಕೆಟ್‌ಗಳು',
-      childTickets: 'ಮಕ್ಕಳ ಟಿಕೆಟ್‌ಗಳು',
-      total: 'ಒಟ್ಟು',
-      state: 'ರಾಜ್ಯ',
-  }
 };
 
 export function TicketSummary({ order, lang }: TicketSummaryProps) {
   const t = translations[lang];
-  const adultPrice = 25;
-  const childPrice = 15;
-  const totalCost = order.tickets.adult * adultPrice + order.tickets.child * childPrice;
 
   return (
-    <Card className="my-2 rounded-xl card-shadow bg-card">
+    <Card className="my-2 rounded-xl bg-card border">
       <CardHeader>
         <CardTitle className="text-lg">{t.title}</CardTitle>
       </CardHeader>
@@ -93,38 +48,42 @@ export function TicketSummary({ order, lang }: TicketSummaryProps) {
           <span className="font-medium text-right">{order.state}</span>
         </div>
         <div className="flex justify-between">
-          <span>{t.museum}:</span>
-          <span className="font-medium text-right">{order.museum}</span>
+          <span>{t.city}:</span>
+          <span className="font-medium text-right">{order.city}</span>
         </div>
         <div className="flex justify-between">
-          <span>{t.experience}:</span>
-          <span className="font-medium text-right">{order.type}</span>
+          <span>{t.event}:</span>
+          <span className="font-medium text-right">{order.event?.name}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>{t.venue}:</span>
+          <span className="font-medium text-right">{order.event?.venue}</span>
         </div>
         <div className="flex justify-between">
           <span>{t.date}:</span>
-          <span className="font-medium">{order.date?.toLocaleDateString(lang)}</span>
+          <span className="font-medium">{order.date?.toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN')}</span>
         </div>
         <div className="flex justify-between">
           <span>{t.time}:</span>
           <span className="font-medium">{order.time}</span>
         </div>
         <Separator className="my-2 bg-border" />
-        {order.tickets.adult > 0 && (
+        {order.tickets.regular > 0 && (
           <div className="flex justify-between">
-            <span>{t.adultTickets}:</span>
-            <span className="font-medium">{order.tickets.adult} x ${adultPrice}</span>
+            <span>{t.regularTickets}:</span>
+            <span className="font-medium">{order.tickets.regular} tickets</span>
           </div>
         )}
-        {order.tickets.child > 0 && (
+        {order.tickets.premium > 0 && (
           <div className="flex justify-between">
-            <span>{t.childTickets}:</span>
-            <span className="font-medium">{order.tickets.child} x ${childPrice}</span>
+            <span>{t.premiumTickets}:</span>
+            <span className="font-medium">{order.tickets.premium} tickets</span>
           </div>
         )}
         <Separator className="my-2 bg-border" />
         <div className="flex justify-between font-bold text-base">
           <span>{t.total}:</span>
-          <span>${totalCost.toFixed(2)}</span>
+          <span>₹{order.totalAmount?.toLocaleString('en-IN') || 0}</span>
         </div>
       </CardContent>
     </Card>

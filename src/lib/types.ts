@@ -6,12 +6,18 @@ export type Message = {
 
 export type TicketOrder = {
   state: string | null;
-  museum: string | null;
-  type: string | null;
+  city: string | null;
+  event: {
+    id: string;
+    name: string;
+    type: 'movie' | 'concert' | 'sports' | 'theater' | 'comedy';
+    venue: string;
+  } | null;
   date: Date | null;
   time: string | null;
   tickets: {
-    adult: number;
-    child: number;
+    regular: number;
+    premium: number;
   };
+  totalAmount?: number;
 };

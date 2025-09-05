@@ -1,22 +1,14 @@
-import ChatInterface from '@/components/chat/chat-interface';
-import { Suspense } from 'react';
+'use client';
 
-function ChatPageContent({ lang }: { lang?: string }) {
-  const validLangs = ['en', 'hi', 'bn', 'ta', 'te', 'kn'];
-  const validLang = lang && validLangs.includes(lang) ? lang as 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'kn' : 'en';
-  return <ChatInterface lang={validLang} />;
-}
+import ChatInterface from '@/components/chat/enhanced-chat-interface';
+import { useLanguage } from '@/contexts/language-context';
 
-export default function ChatPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const lang = typeof searchParams.lang === 'string' ? searchParams.lang : 'en';
+export default function ChatPage() {
+  const { currentLang } = useLanguage();
   
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ChatPageContent lang={lang} />
-    </Suspense>
+    <div className="container mx-auto max-w-4xl">
+      <ChatInterface lang={currentLang} />
+    </div>
   );
 }
