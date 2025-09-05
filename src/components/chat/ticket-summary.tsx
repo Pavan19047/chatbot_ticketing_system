@@ -17,6 +17,7 @@ const translations = {
     adultTickets: 'Adult Tickets',
     childTickets: 'Child Tickets',
     total: 'Total',
+    state: 'State',
   },
   hi: {
     title: 'आदेश सारांश',
@@ -27,6 +28,7 @@ const translations = {
     adultTickets: 'वयस्क टिकट',
     childTickets: 'बच्चे का टिकट',
     total: 'कुल',
+    state: 'राज्य',
   },
   bn: {
       title: 'অর্ডার সারাংশ',
@@ -37,6 +39,7 @@ const translations = {
       adultTickets: 'প্রাপ্তবয়স্কদের টিকিট',
       childTickets: 'শিশুদের টিকিট',
       total: 'মোট',
+      state: 'রাজ্য',
   },
   ta: {
       title: 'ஆர்டர் சுருக்கம்',
@@ -47,6 +50,7 @@ const translations = {
       adultTickets: 'பெரியவர் டிக்கெட்டுகள்',
       childTickets: 'குழந்தை டிக்கெட்டுகள்',
       total: 'மொத்தம்',
+      state: 'மாநிலம்',
   },
   te: {
       title: 'ఆర్డర్ సారాంశం',
@@ -57,6 +61,7 @@ const translations = {
       adultTickets: 'పెద్దల టిక్కెట్లు',
       childTickets: 'పిల్లల టిక్కెట్లు',
       total: 'మొత్తం',
+      state: 'రాష్ట్రం',
   },
   kn: {
       title: 'ಆದೇಶದ ಸಾರಾಂಶ',
@@ -67,6 +72,7 @@ const translations = {
       adultTickets: 'ವಯಸ್ಕರ ಟಿಕೆಟ್‌ಗಳು',
       childTickets: 'ಮಕ್ಕಳ ಟಿಕೆಟ್‌ಗಳು',
       total: 'ಒಟ್ಟು',
+      state: 'ರಾಜ್ಯ',
   }
 };
 
@@ -82,6 +88,10 @@ export function TicketSummary({ order, lang }: TicketSummaryProps) {
         <CardTitle className="text-lg">{t.title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span>{t.state}:</span>
+          <span className="font-medium text-right">{order.state}</span>
+        </div>
         <div className="flex justify-between">
           <span>{t.museum}:</span>
           <span className="font-medium text-right">{order.museum}</span>

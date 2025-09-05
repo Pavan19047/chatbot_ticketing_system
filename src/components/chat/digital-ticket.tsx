@@ -83,6 +83,7 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   const totalTickets = order.tickets.adult + order.tickets.child;
 
   const qrData = JSON.stringify({
+    state: order.state,
     museum: order.museum,
     type: order.type,
     date: order.date?.toISOString().split('T')[0],

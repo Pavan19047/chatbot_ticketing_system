@@ -5,6 +5,7 @@ export type Message = {
 };
 
 export type TicketOrder = {
+  state: string | null;
   museum: string | null;
   type: string | null;
   date: Date | null;
