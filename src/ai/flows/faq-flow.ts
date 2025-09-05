@@ -30,7 +30,7 @@ export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
 const prompt = ai.definePrompt({
   name: 'faqPrompt',
   input: { schema: FaqInputSchema },
-  output: { schema: FaqOutputSchema.nullable() },
+  output: { schema: FaqOutputSchema },
   prompt: `You are a friendly and conversational AI assistant.
 
 Your primary role is to answer any questions the user has, on any topic. Be helpful, informative, and engaging, like a universal AI assistant such as Gemini.
@@ -46,7 +46,7 @@ Answer in the same language as the original question.
 Question: {{{question}}}
 Language: {{{lang}}}
         
-Keep your answer concise and helpful.`,
+Keep your answer concise and helpful. If you cannot answer the question or if it is unintelligible, respond with "I'm sorry, I don't understand your question. Could you please rephrase it?" in the user's language.`,
 });
 
 const faqFlow = ai.defineFlow(
@@ -57,12 +57,6 @@ const faqFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await prompt(input);
-    if (!output) {
-      if (input.lang === 'hi') {
-        return 'मुझे आपका सवाल समझ नहीं आया। क्या आप इसे दूसरे तरीके से पूछ सकते हैं?';
-      }
-      return "I'm sorry, I don't understand your question. Could you please rephrase it?";
-    }
     return output;
   }
 );
