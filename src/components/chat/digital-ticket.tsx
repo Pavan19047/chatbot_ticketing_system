@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card
 import { Separator } from '../ui/separator';
 import { Download, Ticket } from 'lucide-react';
 import { Button } from '../ui/button';
+import { getFontEmbedCSS } from '@/lib/fonts';
 
 interface DigitalTicketProps {
   order: TicketOrder;
@@ -92,11 +93,21 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
     qrData
   )}`;
+
+  const generateImage = async <T,>(generator: (node: HTMLElement, options?: T) => Promise<string>, options?: T) => {
+    if (ticketRef.current === null) {
+      throw new Error('Ticket element not found');
+    }
+    const fontEmbedCss = await getFontEmbedCSS();
+    return generator(ticketRef.current, {
+      ...options,
+      embedCss: fontEmbedCss,
+    } as T);
+  };
   
   const handleDownloadJpg = async () => {
-    if (ticketRef.current === null) return;
     try {
-      const dataUrl = await toJpeg(ticketRef.current, { quality: 0.95, cacheBust: true });
+      const dataUrl = await generateImage(toJpeg, { quality: 0.95 });
       const link = document.createElement('a');
       link.download = 'museum-ticket.jpeg';
       link.href = dataUrl;
@@ -109,7 +120,7 @@ export function DigitalTicket({ order, lang }: DigitalTicketProps) {
   const handleDownloadPdf = async () => {
     if (ticketRef.current === null) return;
     try {
-      const dataUrl = await toPng(ticketRef.current, { cacheBust: true });
+      const dataUrl = await generateImage(toPng);
       const pdf = new jsPDF('p', 'px', [ticketRef.current.offsetWidth, ticketRef.current.offsetHeight]);
       pdf.addImage(dataUrl, 'PNG', 0, 0, ticketRef.current.offsetWidth, ticketRef.current.offsetHeight);
       pdf.save('museum-ticket.pdf');
