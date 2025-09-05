@@ -11,12 +11,12 @@ import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
 const FaqInputSchema = z.object({
-  question: z.string().describe('The user\'s question about the museum.'),
+  question: z.string().describe("The user's question."),
   lang: z.string().describe('The language of the question (e.g., "en", "hi").'),
 });
 export type FaqInput = z.infer<typeof FaqInputSchema>;
 
-const FaqOutputSchema = z.string().describe("The answer to the user's question, or the special action 'BOOK_TICKETS' if the user wants to book a ticket.");
+const FaqOutputSchema = z.string().describe("The answer to the user's question. If the user wants to book tickets, respond with the special action 'BOOK_TICKETS'.");
 export type FaqOutput = z.infer<typeof FaqOutputSchema>;
 
 export async function getAnswer(input: FaqInput): Promise<FaqOutput> {

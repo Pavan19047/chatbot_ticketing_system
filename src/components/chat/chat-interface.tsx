@@ -232,7 +232,7 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   const t = translations[lang];
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState<ChatStep>('start');
-  const [mode, setMode] = useState<ChatMode>('booking');
+  const [mode, setMode] = useState<ChatMode>('faq');
   const [order, setOrder] = useState<TicketOrder>({
     state: null,
     museum: null,
@@ -271,7 +271,9 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
         addMessage('bot', t.welcomeBooking);
         setStep('select_state');
     } else {
-        addMessage('bot', t.welcomeFaq);
+        if (messages.length === 0) {
+            addMessage('bot', t.welcome);
+        }
         setStep('start');
     }
   }
