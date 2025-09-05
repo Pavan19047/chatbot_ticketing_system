@@ -24,15 +24,35 @@ export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
 }
 
 const museumData = {
-    'Delhi': ['National Museum, New Delhi'],
-    'West Bengal': ['Indian Museum, Kolkata'],
-    'Telangana': ['Salar Jung Museum, Hyderabad'],
-    'Maharashtra': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya, Mumbai'],
-    'Karnataka': ['Visvesvaraya Industrial & Technological Museum, Bengaluru'],
-    'Tamil Nadu': ['Government Museum, Chennai'],
-    'Rajasthan': ['Albert Hall Museum, Jaipur'],
-    'Uttar Pradesh': ['Anand Bhavan Museum, Prayagraj'],
+    'Andhra Pradesh': ['Salar Jung Museum, Hyderabad (shared with Telangana)'],
+    'Arunachal Pradesh': ['Jawaharlal Nehru Museum, Itanagar'],
+    'Assam': ['Assam State Museum, Guwahati'],
+    'Bihar': ['Bihar Museum, Patna'],
+    'Chhattisgarh': ['Mahant Ghasidas Memorial Museum, Raipur'],
+    'Goa': ['Goa State Museum, Panaji'],
     'Gujarat': ['Calico Museum of Textiles, Ahmedabad'],
+    'Haryana': ['Heritage Transport Museum, Gurgaon'],
+    'Himachal Pradesh': ['Shimla State Museum, Shimla'],
+    'Jharkhand': ['Ranchi Science Centre, Ranchi'],
+    'Karnataka': ['Visvesvaraya Industrial & Technological Museum, Bengaluru'],
+    'Kerala': ['Napier Museum, Thiruvananthapuram'],
+    'Madhya Pradesh': ['State Museum, Bhopal'],
+    'Maharashtra': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya, Mumbai'],
+    'Manipur': ['Manipur State Museum, Imphal'],
+    'Meghalaya': ['Don Bosco Centre for Indigenous Cultures, Shillong'],
+    'Mizoram': ['Mizoram State Museum, Aizawl'],
+    'Nagaland': ['Nagaland State Museum, Kohima'],
+    'Odisha': ['Odisha State Museum, Bhubaneswar'],
+    'Punjab': ['Virasat-e-Khalsa, Anandpur Sahib'],
+    'Rajasthan': ['Albert Hall Museum, Jaipur'],
+    'Sikkim': ['Namgyal Institute of Tibetology, Gangtok'],
+    'Tamil Nadu': ['Government Museum, Chennai'],
+    'Telangana': ['Salar Jung Museum, Hyderabad'],
+    'Tripura': ['Tripura State Museum, Agartala'],
+    'Uttar Pradesh': ['Anand Bhavan Museum, Prayagraj'],
+    'Uttarakhand': ['Forest Research Institute, Dehradun'],
+    'West Bengal': ['Indian Museum, Kolkata'],
+    'Delhi': ['National Museum, New Delhi']
 };
 
 const prompt = ai.definePrompt(
@@ -74,7 +94,7 @@ const faqFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await prompt(input);
-    if (output === null) {
+    if (!output) {
         if (input.lang === 'hi') {
             return 'मुझे आपका सवाल समझ नहीं आया। क्या आप इसे दूसरे तरीके से पूछ सकते हैं?';
         }
