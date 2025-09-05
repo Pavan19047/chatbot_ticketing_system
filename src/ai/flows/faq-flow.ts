@@ -162,12 +162,10 @@ const faqFlow = ai.defineFlow(
 
     const { output } = await prompt(promptInput);
 
-    // Validate the output to ensure it's a non-empty string.
     if (typeof output === 'string' && output.length > 0) {
       return output;
     }
 
-    // Fallback message if the AI returns a null or empty response.
     const fallbackMessages = {
       en: "I'm sorry, I don't understand your question. Could you please rephrase it?",
       hi: 'मुझे क्षमा करें, मैं आपके प्रश्न को समझ नहीं पाया। क्या आप कृपया इसे फिर से लिख सकते हैं?',
