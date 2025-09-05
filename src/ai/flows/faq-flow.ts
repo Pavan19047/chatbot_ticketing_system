@@ -47,6 +47,12 @@ const faqFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await prompt(input);
-    return output!;
+    if (output === null) {
+        if (input.lang === 'hi') {
+            return 'मुझे आपका सवाल समझ नहीं आया। क्या आप इसे दूसरे तरीके से पूछ सकते हैं?';
+        }
+        return "I'm sorry, I don't understand your question. Could you please rephrase it?";
+    }
+    return output;
   }
 );
