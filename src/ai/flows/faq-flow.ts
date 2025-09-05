@@ -166,9 +166,15 @@ const faqFlow = ai.defineFlow(
       return output;
     }
 
-    if (input.lang === 'hi') {
-      return 'मुझे क्षमा करें, मैं आपके प्रश्न को समझ नहीं पाया। क्या आप कृपया इसे फिर से लिख सकते हैं?';
-    }
-    return "I'm sorry, I don't understand your question. Could you please rephrase it?";
+    const fallbackMessages = {
+      en: "I'm sorry, I don't understand your question. Could you please rephrase it?",
+      hi: 'मुझे क्षमा करें, मैं आपके प्रश्न को समझ नहीं पाया। क्या आप कृपया इसे फिर से लिख सकते हैं?',
+      bn: 'আমি দুঃখিত, আমি আপনার প্রশ্ন বুঝতে পারিনি। আপনি কি দয়া করে এটি পুনরায় বলতে পারেন?',
+      ta: 'மன்னிக்கவும், உங்கள் கேள்வி எனக்குப் புரியவில்லை. தயவுசெய்து அதை வேறுவிதமாகக் கேட்க முடியுமா?',
+      te: 'క్షమించండి, మీ ప్రశ్న నాకు అర్థం కాలేదు. దయచేసి దాన్ని మళ్లీ చెప్పగలరా?',
+      kn: 'ಕ್ಷಮಿಸಿ, ನನಗೆ ನಿಮ್ಮ ಪ್ರಶ್ನೆ ಅರ್ಥವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಅದನ್ನು ಬೇರೆ ರೀತಿಯಲ್ಲಿ ಕೇಳಬಹುದೇ?',
+    };
+
+    return fallbackMessages[input.lang as keyof typeof fallbackMessages] || fallbackMessages.en;
   }
 );
