@@ -209,7 +209,8 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const addMessage = (sender: 'user' | 'bot', content: React.ReactNode) => {
-    setMessages(prev => [...prev, { id: Date.now().toString(), sender, content }]);
+    const id = `${Date.now()}-${Math.random()}`;
+    setMessages(prev => [...prev, { id, sender, content }]);
     setIsBotTyping(sender === 'user');
   };
   
