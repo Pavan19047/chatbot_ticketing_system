@@ -1,15 +1,31 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TicketsSoldChart } from '@/components/dashboard/tickets-sold-chart';
 import { PopularShows } from '@/components/dashboard/popular-shows';
 import { DollarSign, Ticket, TrendingUp } from 'lucide-react';
 
 export default function DashboardPage() {
+  const [totalRevenue, setTotalRevenue] = useState(45231.89);
+  const [ticketsSold, setTicketsSold] = useState(2350);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTotalRevenue(prev => prev + Math.random() * 100);
+      setTicketsSold(prev => prev + Math.floor(Math.random() * 5));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <header className="mb-8">
         <h1 className="font-headline text-4xl font-extrabold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Analytics for Museum Buddy ticket sales.
+          Real-time analytics for Museum Buddy ticket sales.
         </p>
       </header>
 
@@ -20,7 +36,7 @@ export default function DashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
@@ -32,7 +48,7 @@ export default function DashboardPage() {
             <Ticket className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-2xl font-bold">+{ticketsSold}</div>
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>

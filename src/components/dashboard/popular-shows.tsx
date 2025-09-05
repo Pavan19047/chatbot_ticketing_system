@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -8,7 +11,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 
-const shows = [
+const initialShows = [
   { name: 'Special Exhibition: "Cosmos"', tickets: 1250, type: 'Special' },
   { name: 'General Admission', tickets: 850, type: 'General' },
   { name: 'Ancient Worlds', tickets: 450, type: 'Permanent' },
@@ -17,6 +20,23 @@ const shows = [
 ];
 
 export function PopularShows() {
+  const [shows, setShows] = useState(initialShows);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShows(prevShows =>
+        prevShows
+          .map(show => ({
+            ...show,
+            tickets: show.tickets + Math.floor(Math.random() * 3),
+          }))
+          .sort((a, b) => b.tickets - a.tickets)
+      );
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="rounded-lg overflow-hidden border">
       <Table>

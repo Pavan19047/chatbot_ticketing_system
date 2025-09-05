@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 import {
@@ -9,7 +10,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
-const chartData = [
+const initialChartData = [
   { day: 'Monday', tickets: 186 },
   { day: 'Tuesday', tickets: 305 },
   { day: 'Wednesday', tickets: 237 },
@@ -27,6 +28,21 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TicketsSoldChart() {
+  const [chartData, setChartData] = useState(initialChartData);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setChartData(prevData =>
+        prevData.map(item => ({
+          ...item,
+          tickets: item.tickets + Math.floor(Math.random() * 2 - 1), // -1, 0, or 1
+        }))
+      );
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
       <BarChart accessibilityLayer data={chartData}>
