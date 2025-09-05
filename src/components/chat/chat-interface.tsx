@@ -245,7 +245,7 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
       initialLoadRef.current = false;
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length]);
+  }, []);
 
   const handleStartSelection = (selection: 'book' | 'faq') => {
     addMessage('user', selection === 'book' ? t.bookTickets : t.askQuestion);
@@ -272,8 +272,15 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
     const answer = await getAnswer({question, lang});
     
     setIsBotTyping(false);
-    addMessage('bot', answer);
-    handleBotResponse(() => setStep('start'));
+
+    if (answer === 'BOOK_TICKETS') {
+        addMessage('bot', t.selectMuseum);
+        setStep('select_museum');
+    } else {
+        addMessage('bot', answer);
+        // After answering, we can guide the user back to the main options.
+        handleBotResponse(() => setStep('start'));
+    }
   }
   
   const handleMuseumSelection = (museum: string) => {
