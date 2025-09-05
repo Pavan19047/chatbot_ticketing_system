@@ -232,7 +232,8 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
       addMessage('bot', t.welcome);
       handleBotResponse(() => setStep('start'));
     }
-  }, [messages.length, t.welcome]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleStartSelection = (selection: 'book' | 'faq') => {
     addMessage('user', selection === 'book' ? t.bookTickets : t.askQuestion);
