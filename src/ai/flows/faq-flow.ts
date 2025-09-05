@@ -114,15 +114,15 @@ const museumData = {
   },
 };
 
-
 const prompt = ai.definePrompt({
   name: 'faqPrompt',
-  input: { schema: z.object({
-    ...FaqInputSchema.shape,
-    museums: z.string(),
-    times: z.string(),
-  }) },
-  output: { schema: FaqOutputSchema },
+  input: {
+    schema: z.object({
+      ...FaqInputSchema.shape,
+      museums: z.string(),
+      times: z.string(),
+    }),
+  },
   prompt: `You are a friendly and conversational AI assistant for a museum booking app called "Museum Buddy". Your primary role is to answer user questions.
 
 You have access to the following information about the museums. Use this data to answer questions about museum lists, locations, and timings.
@@ -142,7 +142,7 @@ Answer in the same language as the original question.
 Question: {{{question}}}
 Language: {{{lang}}}
         
-Keep your answer concise and helpful. If you cannot answer the question or if it is unintelligible, respond with "I'm sorry, I don't understand your question. Could you please rephrase it?" in the user's language.`,
+Keep your answer concise and helpful.`,
 });
 
 const faqFlow = ai.defineFlow(
@@ -162,10 +162,12 @@ const faqFlow = ai.defineFlow(
 
     const { output } = await prompt(promptInput);
 
+    // Validate the output to ensure it's a non-empty string.
     if (typeof output === 'string' && output.length > 0) {
       return output;
     }
 
+    // Fallback message if the AI returns a null or empty response.
     const fallbackMessages = {
       en: "I'm sorry, I don't understand your question. Could you please rephrase it?",
       hi: 'मुझे क्षमा करें, मैं आपके प्रश्न को समझ नहीं पाया। क्या आप कृपया इसे फिर से लिख सकते हैं?',
