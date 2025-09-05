@@ -23,22 +23,41 @@ export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
   return faqFlow(input);
 }
 
+const museumData = {
+    'Delhi': ['National Museum, New Delhi'],
+    'West Bengal': ['Indian Museum, Kolkata'],
+    'Telangana': ['Salar Jung Museum, Hyderabad'],
+    'Maharashtra': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya, Mumbai'],
+    'Karnataka': ['Visvesvaraya Industrial & Technological Museum, Bengaluru'],
+    'Tamil Nadu': ['Government Museum, Chennai'],
+    'Rajasthan': ['Albert Hall Museum, Jaipur'],
+    'Uttar Pradesh': ['Anand Bhavan Museum, Prayagraj'],
+    'Gujarat': ['Calico Museum of Textiles, Ahmedabad'],
+};
+
 const prompt = ai.definePrompt(
     {
         name: 'faqPrompt',
         input: { schema: FaqInputSchema },
         output: { schema: FaqOutputSchema.nullable() },
-        prompt: `You are a friendly and conversational assistant.
+        prompt: `You are a friendly and conversational assistant for "Museum Buddy".
+
+Your primary role is to answer questions.
 
 If the user greets you, respond with a friendly greeting.
 
-If the user's question is about booking tickets, purchasing tickets, getting a list of museums, or any other query that implies they want to start the ticket buying process, you must respond with the exact string "BOOK_TICKETS" and nothing else.
+If the user asks for a list of museums or which museums are available, you should list them from the data provided below. After listing them, you can ask if they would like to book a ticket.
 
-If the question is about a museum, answer it in a helpful and concise way.
+If the user's question is about booking tickets, purchasing tickets, or any other query that implies they want to start the ticket buying process (but not just asking for a list), you must respond with the exact string "BOOK_TICKETS" and nothing else.
+
+If the question is about a specific museum from the list, answer it in a helpful and concise way.
 
 If the question is a general knowledge question, answer it accurately.
 
 Answer in the same language as the original question.
+        
+Here is the list of available museums you know about:
+${JSON.stringify(museumData, null, 2)}
         
 Question: {{{question}}}
 Language: {{{lang}}}
