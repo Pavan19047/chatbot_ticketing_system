@@ -17,7 +17,7 @@ import { getAnswer } from '@/ai/flows/faq-flow';
 
 const translations = {
   en: {
-    welcome: "Hello! I'm Museum Buddy. How can I help you today?",
+    welcome: "Hello! I'm Museum Buddy. How can I help you today? You can ask me anything or switch to 'Ticket Booking' to buy tickets.",
     welcomeBooking: 'Welcome to Ticket Booking. Please select a state to begin.',
     welcomeFaq: 'You can ask me anything about museums or general topics.',
     bookingMode: 'Ticket Booking',
@@ -51,7 +51,7 @@ const translations = {
     },
   },
   hi: {
-    welcome: 'नमस्ते! मैं म्यूजियम बडी हूं। मैं आज आपकी कैसे मदद कर सकता हूं?',
+    welcome: 'नमस्ते! मैं म्यूजियम बडी हूं। मैं आज आपकी कैसे मदद कर सकता हूं? आप मुझसे कुछ भी पूछ सकते हैं या टिकट खरीदने के लिए \'टिकट बुकिंग\' पर स्विच कर सकते हैं।',
     welcomeBooking: 'टिकट बुकिंग में आपका स्वागत है। शुरू करने के लिए कृपया एक राज्य चुनें।',
     welcomeFaq: 'आप मुझसे संग्रहालयों या सामान्य विषयों के बारे में कुछ भी पूछ सकते हैं।',
     bookingMode: 'टिकट बुकिंग',
@@ -85,7 +85,7 @@ const translations = {
     }
   },
   bn: {
-    welcome: 'নমস্কার! আমি মিউজিয়াম বাডি। আমি আজ আপনাকে কিভাবে সাহায্য করতে পারি?',
+    welcome: 'নমস্কার! আমি মিউজিয়াম বাডি। আমি আজ আপনাকে কিভাবে সাহায্য করতে পারি? আপনি আমাকে কিছু জিজ্ঞাসা করতে পারেন অথবা টিকিট কেনার জন্য \'টিকিট বুকিং\' এ স্যুইচ করতে পারেন।',
     welcomeBooking: 'টিকিট বুকিংয়ে স্বাগতম। শুরু করতে অনুগ্রহ করে একটি রাজ্য নির্বাচন করুন।',
     welcomeFaq: 'আপনি আমার কাছে জাদুঘর বা সাধারণ বিষয় সম্পর্কে কিছু জিজ্ঞাসা করতে পারেন।',
     bookingMode: 'টিকিট বুকিং',
@@ -119,7 +119,7 @@ const translations = {
     }
   },
   ta: {
-    welcome: 'வணக்கம்! நான் மியூசியம் படி. இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?',
+    welcome: 'வணக்கம்! நான் மியூசியம் படி. இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்? நீங்கள் என்னிடம் எதுவும் கேட்கலாம் அல்லது டிக்கெட் வாங்க \'டிக்கெட் முன்பதிவு\' க்கு மாறலாம்.',
     welcomeBooking: 'டிக்கெட் முன்பதிவுக்கு வரவேற்கிறோம். தொடங்க ஒரு மாநிலத்தைத் தேர்ந்தெடுக்கவும்.',
     welcomeFaq: 'அருங்காட்சியகங்கள் அல்லது பொதுவான தலைப்புகள் பற்றி நீங்கள் என்னிடம் எதுவும் கேட்கலாம்.',
     bookingMode: 'டிக்கெட் முன்பதிவு',
@@ -153,7 +153,7 @@ const translations = {
     }
   },
   te: {
-    welcome: 'నమస్కారం! నేను మ్యూజియం బడ్డీని. ఈ రోజు నేను మీకు ఎలా సహాయపడగలను?',
+    welcome: 'నమస్కారం! నేను మ్యూజియం బడ్డీని. ఈ రోజు నేను మీకు ఎలా సహాయపడగలను? మీరు నన్ను ఏదైనా అడగవచ్చు లేదా టిక్కెట్లు కొనడానికి \'టికెట్ బుకింగ్\'కు మారవచ్చు.',
     welcomeBooking: 'టికెట్ బుకింగ్‌కు స్వాగతం. ప్రారంభించడానికి దయచేసి ఒక రాష్ట్రాన్ని ఎంచుకోండి.',
     welcomeFaq: 'మీరు మ్యూజియంలు లేదా సాధారణ అంశాల గురించి నన్ను ఏదైనా అడగవచ్చు.',
     bookingMode: 'టికెట్ బుకింగ్',
@@ -187,7 +187,7 @@ const translations = {
     }
   },
   kn: {
-    welcome: 'ನಮಸ್ಕಾರ! ನಾನು ಮ್ಯೂಸಿಯಂ ಬಡ್ಡಿ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
+    welcome: 'ನಮಸ್ಕಾರ! ನಾನು ಮ್ಯೂಸಿಯಂ ಬಡ್ಡಿ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು? ನೀವು ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಬಹುದು ಅಥವಾ ಟಿಕೆಟ್ ಖರೀದಿಸಲು \'ಟಿಕೆಟ್ ಬುಕಿಂಗ್\'ಗೆ ಬದಲಾಯಿಸಬಹುದು.',
     welcomeBooking: 'ಟಿಕೆಟ್ ಬುಕಿಂಗ್‌ಗೆ ಸುಸ್ವಾಗತ. ಪ್ರಾರಂಭಿಸಲು ದಯವಿಟ್ಟು ರಾಜ್ಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
     welcomeFaq: 'ವಸ್ತುಸಂಗ್ರಹಾಲಯಗಳು ಅಥವಾ ಸಾಮಾನ್ಯ ವಿಷಯಗಳ ಬಗ್ಗೆ ನೀವು ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಬಹುದು.',
     bookingMode: 'ಟಿಕೆಟ್ ಬುಕಿಂಗ್',
@@ -300,12 +300,7 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
     
     handleBotResponse(async () => {
       const answer = await getAnswer({question, lang});
-      if (answer === 'BOOK_TICKETS') {
-          addMessage('bot', "It looks like you want to book tickets. I'll switch you to booking mode.");
-          handleBotResponse(() => handleModeChange('booking'), 1500);
-      } else {
-          addMessage('bot', answer);
-      }
+      addMessage('bot', answer);
     }, 0);
   }
   

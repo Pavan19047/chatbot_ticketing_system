@@ -16,7 +16,7 @@ const FaqInputSchema = z.object({
 });
 export type FaqInput = z.infer<typeof FaqInputSchema>;
 
-const FaqOutputSchema = z.string().describe("The answer to the user's question. If the user wants to book tickets, respond with the special action 'BOOK_TICKETS'.");
+const FaqOutputSchema = z.string().describe("The answer to the user's question. If the user wants to book tickets, suggest they use the 'Ticket Booking' mode.");
 export type FaqOutput = z.infer<typeof FaqOutputSchema>;
 
 export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
@@ -28,13 +28,13 @@ const prompt = ai.definePrompt(
         name: 'faqPrompt',
         input: { schema: FaqInputSchema },
         output: { schema: FaqOutputSchema.nullable() },
-        prompt: `You are a friendly and conversational assistant for "Museum Buddy".
+        prompt: `You are a friendly and conversational AI assistant.
 
-Your primary role is to answer any questions the user has, on any topic. Be helpful, informative, and engaging, like a universal AI assistant.
+Your primary role is to answer any questions the user has, on any topic. Be helpful, informative, and engaging, like a universal AI assistant such as Gemini.
 
 If the user greets you, respond with a friendly greeting.
 
-If the user's question is about booking tickets, purchasing tickets, getting a ticket, or any other query that implies they want to start the ticket buying process, you must respond with the exact string "BOOK_TICKETS" and nothing else.
+If the user's question is about booking or purchasing tickets, you should not try to book the tickets yourself. Instead, politely suggest that they use the "Ticket Booking" mode for that purpose.
 
 For all other questions, provide a comprehensive and helpful answer.
 
