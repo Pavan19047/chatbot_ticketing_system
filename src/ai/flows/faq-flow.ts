@@ -23,38 +23,6 @@ export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
   return faqFlow(input);
 }
 
-const museumData = {
-    'Andhra Pradesh': ['Salar Jung Museum, Hyderabad (shared with Telangana)'],
-    'Arunachal Pradesh': ['Jawaharlal Nehru Museum, Itanagar'],
-    'Assam': ['Assam State Museum, Guwahati'],
-    'Bihar': ['Bihar Museum, Patna'],
-    'Chhattisgarh': ['Mahant Ghasidas Memorial Museum, Raipur'],
-    'Goa': ['Goa State Museum, Panaji'],
-    'Gujarat': ['Calico Museum of Textiles, Ahmedabad'],
-    'Haryana': ['Heritage Transport Museum, Gurgaon'],
-    'Himachal Pradesh': ['Shimla State Museum, Shimla'],
-    'Jharkhand': ['Ranchi Science Centre, Ranchi'],
-    'Karnataka': ['Visvesvaraya Industrial & Technological Museum, Bengaluru'],
-    'Kerala': ['Napier Museum, Thiruvananthapuram'],
-    'Madhya Pradesh': ['State Museum, Bhopal'],
-    'Maharashtra': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya, Mumbai'],
-    'Manipur': ['Manipur State Museum, Imphal'],
-    'Meghalaya': ['Don Bosco Centre for Indigenous Cultures, Shillong'],
-    'Mizoram': ['Mizoram State Museum, Aizawl'],
-    'Nagaland': ['Nagaland State Museum, Kohima'],
-    'Odisha': ['Odisha State Museum, Bhubaneswar'],
-    'Punjab': ['Virasat-e-Khalsa, Anandpur Sahib'],
-    'Rajasthan': ['Albert Hall Museum, Jaipur'],
-    'Sikkim': ['Namgyal Institute of Tibetology, Gangtok'],
-    'Tamil Nadu': ['Government Museum, Chennai'],
-    'Telangana': ['Salar Jung Museum, Hyderabad'],
-    'Tripura': ['Tripura State Museum, Agartala'],
-    'Uttar Pradesh': ['Anand Bhavan Museum, Prayagraj'],
-    'Uttarakhand': ['Forest Research Institute, Dehradun'],
-    'West Bengal': ['Indian Museum, Kolkata'],
-    'Delhi': ['National Museum, New Delhi']
-};
-
 const prompt = ai.definePrompt(
     {
         name: 'faqPrompt',
@@ -62,22 +30,15 @@ const prompt = ai.definePrompt(
         output: { schema: FaqOutputSchema.nullable() },
         prompt: `You are a friendly and conversational assistant for "Museum Buddy".
 
-Your primary role is to answer questions.
+Your primary role is to answer any questions the user has, on any topic. Be helpful, informative, and engaging, like a universal AI assistant.
 
 If the user greets you, respond with a friendly greeting.
 
-If the user asks for a list of museums or which museums are available, you should list them from the data provided below. After listing them, you can ask if they would like to book a ticket.
+If the user's question is about booking tickets, purchasing tickets, getting a ticket, or any other query that implies they want to start the ticket buying process, you must respond with the exact string "BOOK_TICKETS" and nothing else.
 
-If the user's question is about booking tickets, purchasing tickets, or any other query that implies they want to start the ticket buying process (but not just asking for a list), you must respond with the exact string "BOOK_TICKETS" and nothing else.
-
-If the question is about a specific museum from the list, answer it in a helpful and concise way.
-
-If the question is a general knowledge question, answer it accurately.
+For all other questions, provide a comprehensive and helpful answer.
 
 Answer in the same language as the original question.
-        
-Here is the list of available museums you know about:
-${JSON.stringify(museumData, null, 2)}
         
 Question: {{{question}}}
 Language: {{{lang}}}
