@@ -299,8 +299,13 @@ export default function ChatInterface({ lang }: { lang: 'en' | 'hi' | 'bn' | 'ta
     e.currentTarget.reset();
     
     handleBotResponse(async () => {
-      const answer = await getAnswer({question, lang});
-      addMessage('bot', answer);
+      const result = await getAnswer({question, lang});
+      if (result.intent === 'SWITCH_TO_BOOKING') {
+        addMessage('bot', result.answer);
+        handleBotResponse(() => handleModeChange('booking'));
+      } else {
+        addMessage('bot', result.answer);
+      }
     }, 0);
   }
   

@@ -16,11 +16,19 @@ const FaqInputSchema = z.object({
 });
 export type FaqInput = z.infer<typeof FaqInputSchema>;
 
-const FaqOutputSchema = z
-  .string()
-  .describe(
-    "The answer to the user's question. If the user wants to book tickets, suggest they use the 'Ticket Booking' mode."
-  );
+const FaqOutputSchema = z.object({
+  answer: z
+    .string()
+    .describe(
+      "The answer to the user's question. This will be displayed to the user."
+    ),
+  intent: z
+    .enum(['ANSWER', 'SWITCH_TO_BOOKING'])
+    .describe(
+      "The user's intent. If the user wants to book tickets, this should be 'SWITCH_TO_BOOKING'."
+    ),
+});
+
 export type FaqOutput = z.infer<typeof FaqOutputSchema>;
 
 export async function getAnswer(input: FaqInput): Promise<FaqOutput> {
@@ -123,6 +131,7 @@ const prompt = ai.definePrompt({
       times: z.string(),
     }),
   },
+  output: { schema: FaqOutputSchema },
   prompt: `You are a friendly and conversational AI assistant for a museum booking app called "Museum Buddy". Your primary role is to answer user questions.
 
 You have access to the following information about the museums. Use this data to answer questions about museum lists, locations, and timings.
@@ -131,11 +140,12 @@ Museum Data:
 Museums: {{{museums}}}
 Times: {{{times}}}
 
+- If the user's question is about booking or purchasing tickets, or they say "switch to ticket booking", set the intent to 'SWITCH_TO_BOOKING' and provide a short confirmation message in the 'answer' field (e.g., "Switching to ticket booking...").
+- For all other questions (including greetings), set the intent to 'ANSWER'.
 - If the user asks for a list of museums, provide the list from the data above.
 - If the user asks about timings, provide the available time slots.
 - For all other general questions (e.g., "what is machine learning?", "who is the president?"), answer them as a general knowledge AI.
 - If the user greets you, respond with a friendly greeting.
-- If the user's question is about booking or purchasing tickets, you should not try to book the tickets yourself. Instead, politely suggest that they use the "Ticket Booking" mode for that purpose.
 
 Answer in the same language as the original question.
         
@@ -162,7 +172,7 @@ const faqFlow = ai.defineFlow(
 
     const { output } = await prompt(promptInput);
 
-    if (typeof output === 'string' && output.length > 0) {
+    if (output) {
       return output;
     }
 
@@ -175,6 +185,9 @@ const faqFlow = ai.defineFlow(
       kn: 'ಕ್ಷಮಿಸಿ, ನನಗೆ ನಿಮ್ಮ ಪ್ರಶ್ನೆ ಅರ್ಥವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಅದನ್ನು ಬೇರೆ ರೀತಿಯಲ್ಲಿ ಕೇಳಬಹುದೇ?',
     };
 
-    return fallbackMessages[input.lang as keyof typeof fallbackMessages] || fallbackMessages.en;
+    return {
+      answer: fallbackMessages[input.lang as keyof typeof fallbackMessages] || fallbackMessages.en,
+      intent: 'ANSWER',
+    }
   }
 );
